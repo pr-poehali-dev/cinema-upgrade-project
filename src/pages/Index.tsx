@@ -4,16 +4,103 @@ import { Button } from '@/components/ui/button';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/b81f7a66-4293-4516-95b1-92db22ccd464.jpg';
 const STILL_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/fd1dfb0d-6656-4ce9-ab8d-30e38475d631.jpg';
+const HERO1_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/02ebf0d8-7514-49c5-b12b-aea7088b6bde.jpg';
+const HERO2_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/8d833056-7e3a-4ca0-add1-063e70258440.jpg';
+const POSTER_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/01126768-c46a-4483-9065-a1cf2d7224d1.jpg';
 
 const NAV = [
   { id: 'hero', label: 'Главная' },
   { id: 'seasons', label: 'Сезоны' },
+  { id: 'heroes', label: 'Герои' },
   { id: 'episodes', label: 'Эпизоды' },
+  { id: 'chronicles', label: 'Хроника' },
+  { id: 'poster', label: 'Афиша' },
   { id: 'timeline', label: 'Лента памяти' },
   { id: 'minute', label: 'Видео за минуту' },
   { id: 'gallery', label: 'Галерея' },
-  { id: 'about', label: 'О проекте' },
   { id: 'community', label: 'Сообщество' },
+];
+
+const SEASONS = [
+  { n: 1, title: 'Начало', status: 'Доступен', episodes: 8, year: 2024, locked: false },
+  { n: 2, title: 'Разлом', status: 'Скоро', episodes: 8, year: 2025, locked: true },
+  { n: 3, title: 'Тени', status: 'В разработке', episodes: 8, year: 2026, locked: true },
+  { n: 4, title: 'Возвращение', status: 'В разработке', episodes: 8, year: 2026, locked: true },
+  { n: 5, title: 'Финал', status: 'В разработке', episodes: 10, year: 2027, locked: true },
+  { n: 6, title: 'Эксклюзив', status: 'Секретный', episodes: 6, year: '???', locked: true },
+];
+
+const HEROES = [
+  {
+    name: 'Алексей Громов',
+    role: 'Командир разведки',
+    img: HERO1_IMG,
+    feat: 'В одиночку обеспечил отход батальона под Смоленском. Вернулся за ранеными трижды.',
+    years: '1909–1943',
+    badge: 'Главный герой',
+  },
+  {
+    name: 'Мария Светлова',
+    role: 'Связная подполья',
+    img: HERO2_IMG,
+    feat: 'Переправила через линию фронта 47 секретных донесений. Ни одно не было перехвачено.',
+    years: '1918–1945',
+    badge: 'Ключевой персонаж',
+  },
+  {
+    name: 'Пётр Зайцев',
+    role: 'Сапёр',
+    img: HERO_IMG,
+    feat: 'Разминировал переправу за 12 минут под артобстрелом. Спас переход двух полков.',
+    years: '1912–1941',
+    badge: 'Эпизод 3',
+  },
+  {
+    name: 'Нина Орлова',
+    role: 'Военный врач',
+    img: STILL_IMG,
+    feat: '18 часов непрерывных операций после взятия Киева. Выжило 34 из 36 раненых.',
+    years: '1920–1990',
+    badge: 'Сезон 2',
+  },
+];
+
+const CHRONICLES = [
+  {
+    date: '22 июня 1941',
+    op: 'Рубеж',
+    type: 'Операция',
+    text: 'Начало величайшего противостояния. Первые часы войны глазами наших героев — именно этому посвящён финальный эпизод первого сезона.',
+    tag: 'Ключевое событие',
+  },
+  {
+    date: '14 октября 1941',
+    op: 'Вяземский котёл',
+    type: 'Подвиг',
+    text: 'Громов с семью бойцами двое суток удерживал переправу, пока не подошло подкрепление. Эта история станет центром второго сезона.',
+    tag: 'Сезон 2',
+  },
+  {
+    date: '19 ноября 1942',
+    op: 'Операция «Уран»',
+    type: 'Поворот',
+    text: 'Контрнаступление под Сталинградом. Светлова получила приказ, который изменил всё. Подробности — в третьем эпизоде.',
+    tag: 'Скоро',
+  },
+  {
+    date: '5 июля 1943',
+    op: 'Курская дуга',
+    type: 'Операция',
+    text: 'Крупнейшее танковое сражение. Где в этом аду оказался Зайцев — расскажет четвёртый сезон.',
+    tag: 'В разработке',
+  },
+];
+
+const POSTERS = [
+  { title: 'Сезон 1: Начало', sub: 'Уже доступен', date: '2024', img: POSTER_IMG, hot: true },
+  { title: 'Сезон 2: Разлом', sub: 'Премьера', date: '2025', img: HERO_IMG, hot: false },
+  { title: 'Сезон 2 · Трейлер', sub: 'Скоро', date: 'Лето 2025', img: STILL_IMG, hot: false },
+  { title: 'Эксклюзив', sub: 'Закрытый показ', date: '???', img: HERO1_IMG, hot: false },
 ];
 
 const TIMELINE = [
@@ -33,15 +120,6 @@ const MINUTE_CLIPS = [
   { n: 5, title: 'Развязка', dur: '1:45', desc: 'Эпилог, который оставляет вопросы и предвкушение.' },
 ];
 
-const SEASONS = [
-  { n: 1, title: 'Начало', status: 'Доступен', episodes: 8, year: 2024, locked: false },
-  { n: 2, title: 'Разлом', status: 'Скоро', episodes: 8, year: 2025, locked: true },
-  { n: 3, title: 'Тени', status: 'В разработке', episodes: 8, year: 2026, locked: true },
-  { n: 4, title: 'Возвращение', status: 'В разработке', episodes: 8, year: 2026, locked: true },
-  { n: 5, title: 'Финал', status: 'В разработке', episodes: 10, year: 2027, locked: true },
-  { n: 6, title: 'Эксклюзив', status: 'Секретный', episodes: 6, year: '???', locked: true },
-];
-
 const EPISODES = [
   { n: 1, title: 'Пробуждение', dur: '24:10', desc: 'Где всё начинается. Первый шаг в неизвестность.' },
   { n: 2, title: 'Эхо прошлого', dur: '26:45', desc: 'Воспоминания, которые меняют всё.' },
@@ -56,7 +134,7 @@ const MOMENTS = [
   { id: 4, text: 'Молчаливый диалог', votes: 631 },
 ];
 
-const GALLERY = [HERO_IMG, STILL_IMG, HERO_IMG, STILL_IMG, STILL_IMG, HERO_IMG];
+const GALLERY = [HERO_IMG, STILL_IMG, HERO1_IMG, HERO2_IMG, STILL_IMG, HERO_IMG];
 
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [hover, setHover] = useState(0);
@@ -82,12 +160,19 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
   );
 }
 
+const CHRONICLE_COLORS: Record<string, string> = {
+  'Операция': 'text-primary border-primary/40 bg-primary/10',
+  'Подвиг': 'text-accent border-accent/40 bg-accent/10',
+  'Поворот': 'text-foreground border-border bg-muted',
+};
+
 const Index = () => {
   const [ratings, setRatings] = useState<Record<number, number>>({});
   const [votes, setVotes] = useState<Record<number, number>>({});
   const [voted, setVoted] = useState<Set<number>>(new Set());
   const [activeYear, setActiveYear] = useState(0);
   const [activeClip, setActiveClip] = useState(0);
+  const [activeHero, setActiveHero] = useState<number | null>(null);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -101,18 +186,19 @@ const Index = () => {
 
   return (
     <div className="film-grain min-h-screen bg-background text-foreground overflow-x-hidden">
+
       {/* NAV */}
       <header className="fixed top-0 inset-x-0 z-50 glass border-b border-border/50">
         <nav className="container flex items-center justify-between h-16">
           <button onClick={() => scrollTo('hero')} className="font-display font-700 text-xl tracking-[0.3em] text-primary">
             MEMORY
           </button>
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden lg:flex items-center gap-5">
             {NAV.map((n) => (
               <button
                 key={n.id}
                 onClick={() => scrollTo(n.id)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wide"
+                className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wide"
               >
                 {n.label}
               </button>
@@ -124,17 +210,33 @@ const Index = () => {
         </nav>
       </header>
 
-      {/* HERO */}
-      <section id="hero" className="relative min-h-screen flex items-center">
+      {/* ═══ HERO с видеотизером ═══ */}
+      <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Видео-фон */}
         <div className="absolute inset-0">
-          <img src={HERO_IMG} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={HERO_IMG}
+          >
+            {/* Замените src на ссылку на ваш видеотизер */}
+            <source src="" type="video/mp4" />
+          </video>
+          {/* Если видео не загрузилось — показываем картинку */}
+          <img src={HERO_IMG} alt="" className="absolute inset-0 w-full h-full object-cover -z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
           <div className="absolute inset-0 vignette" />
         </div>
-        <div className="absolute -bottom-40 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[140px] animate-glow-pulse" />
-        <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
 
+        {/* Блоб-свечения */}
+        <div className="absolute -bottom-40 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[140px] animate-glow-pulse pointer-events-none" />
+        <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] animate-glow-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
+
+        {/* Контент */}
         <div className="container relative z-10 pt-20">
           <div className="max-w-2xl">
             <p className="font-display tracking-[0.5em] text-accent text-sm mb-6 animate-fade-in uppercase">
@@ -144,14 +246,14 @@ const Index = () => {
               MEMORY<br />PROJECT
             </h1>
             <p className="text-lg text-muted-foreground max-w-lg mb-10 animate-fade-up" style={{ animationDelay: '0.15s', opacity: 0 }}>
-              Кинематографичная история, которая разворачивается через шесть сезонов. Эпизоды, эксклюзивы и атмосфера большого кино.
+              Кинематографичная история, разворачивающаяся через шесть сезонов. Эпизоды, эксклюзивы и атмосфера большого кино.
             </p>
             <div className="flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
               <Button size="lg" onClick={() => scrollTo('episodes')} className="rounded-full font-display tracking-wider glow-amber text-base px-8">
                 <Icon name="Play" size={18} className="mr-2" /> Смотреть эпизоды
               </Button>
-              <Button size="lg" variant="outline" onClick={() => scrollTo('about')} className="rounded-full font-display tracking-wider text-base px-8 border-border">
-                О проекте
+              <Button size="lg" variant="outline" onClick={() => scrollTo('heroes')} className="rounded-full font-display tracking-wider text-base px-8 border-border">
+                <Icon name="Users" size={16} className="mr-2" /> Герои
               </Button>
             </div>
             <div className="flex gap-8 mt-14 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
@@ -164,12 +266,19 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Индикатор видео */}
+        <div className="absolute bottom-10 right-10 glass rounded-xl px-4 py-2 flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+          Видеотизер
+        </div>
+
         <button onClick={() => scrollTo('seasons')} className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-bounce">
           <Icon name="ChevronDown" size={28} />
         </button>
       </section>
 
-      {/* SEASONS */}
+      {/* ═══ СЕЗОНЫ ═══ */}
       <section id="seasons" className="py-28 relative">
         <div className="container">
           <SectionTitle kicker="Хронология" title="Сезоны" />
@@ -207,8 +316,64 @@ const Index = () => {
         </div>
       </section>
 
-      {/* EPISODES + RATING */}
-      <section id="episodes" className="py-28 relative bg-card/30">
+      {/* ═══ ГЕРОИ ═══ */}
+      <section id="heroes" className="py-28 relative bg-card/30 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        <div className="container relative">
+          <SectionTitle kicker="Досье" title="Герои" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Люди, чьи судьбы вплетены в историю проекта. Нажми на карточку — узнай их подвиг.</p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
+            {HEROES.map((h, i) => (
+              <button
+                key={h.name}
+                onClick={() => setActiveHero(activeHero === i ? null : i)}
+                className={`group text-left rounded-2xl border overflow-hidden transition-all duration-500 animate-fade-up ${activeHero === i ? 'border-primary glow-amber' : 'border-border hover:border-primary/40'}`}
+                style={{ animationDelay: `${i * 0.09}s`, opacity: 0 }}
+              >
+                {/* Портрет */}
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={h.img}
+                    alt={h.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ filter: 'contrast(1.05) brightness(0.9)' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+                  <span className={`absolute top-3 right-3 text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full border font-medium ${activeHero === i ? 'border-primary bg-primary/20 text-primary' : 'glass border-border/60 text-muted-foreground'}`}>
+                    {h.badge}
+                  </span>
+                </div>
+
+                {/* Инфо */}
+                <div className="p-4 bg-card">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-accent mb-1">{h.role}</p>
+                  <h3 className="font-display font-600 text-xl tracking-wide mb-0.5">{h.name}</h3>
+                  <p className="text-xs text-muted-foreground mb-3">{h.years}</p>
+
+                  {/* Подвиг — раскрывается при клике */}
+                  <div className={`overflow-hidden transition-all duration-500 ${activeHero === i ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="border-t border-border/50 pt-3">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-primary mb-2 flex items-center gap-1.5">
+                        <Icon name="Shield" size={11} /> Подвиг
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{h.feat}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                    <Icon name={activeHero === i ? 'ChevronUp' : 'ChevronDown'} size={14} />
+                    {activeHero === i ? 'Свернуть' : 'Подвиг'}
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ЭПИЗОДЫ + РЕЙТИНГ ═══ */}
+      <section id="episodes" className="py-28 relative">
         <div className="container">
           <SectionTitle kicker="Сезон 1 · Начало" title="Эпизоды" />
           <p className="text-muted-foreground mt-4 max-w-lg">Оцени каждый эпизод — твои звёзды формируют рейтинг сериала.</p>
@@ -249,14 +414,108 @@ const Index = () => {
         </div>
       </section>
 
-      {/* TIMELINE — ЛЕНТА ПАМЯТИ 1929–1941 */}
-      <section id="timeline" className="py-28 relative overflow-hidden">
+      {/* ═══ ХРОНИКА ОПЕРАЦИЙ И ПОДВИГОВ ═══ */}
+      <section id="chronicles" className="py-28 relative bg-card/30 overflow-hidden">
+        {/* Декоративная вертикаль */}
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent pointer-events-none hidden lg:block" />
+
+        <div className="container relative">
+          <SectionTitle kicker="Архив · Редкие материалы" title="Хроника" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Операции, подвиги и ключевые события, вплетённые в ткань сериала. Обновляется редко — каждый материал важен.</p>
+
+          <div className="mt-14 space-y-6 max-w-5xl">
+            {CHRONICLES.map((c, i) => (
+              <div
+                key={i}
+                className="group grid lg:grid-cols-[180px_1fr] gap-0 animate-fade-up"
+                style={{ animationDelay: `${i * 0.1}s`, opacity: 0 }}
+              >
+                {/* Дата-колонка */}
+                <div className="lg:pr-8 lg:text-right mb-3 lg:mb-0 lg:pt-1">
+                  <div className="font-display font-700 text-sm text-primary tracking-wider">{c.date}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{c.op}</div>
+                </div>
+
+                {/* Карточка события */}
+                <div className={`relative pl-6 before:absolute before:left-0 before:top-2 before:w-2 before:h-2 before:rounded-full before:border-2 before:border-primary lg:before:hidden`}>
+                  {/* точка на мобайле */}
+                  <div className="rounded-2xl border border-border bg-card p-5 hover:border-primary/40 transition-all">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <span className={`text-[10px] uppercase tracking-[0.25em] px-2.5 py-1 rounded-full border font-medium ${CHRONICLE_COLORS[c.type] ?? 'text-muted-foreground border-border bg-muted'}`}>
+                        {c.type}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{c.tag}</span>
+                    </div>
+                    <h3 className="font-display font-700 text-2xl tracking-wide mb-2">{c.op}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{c.text}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex items-center gap-3 text-sm text-muted-foreground animate-fade-in">
+            <Icon name="RefreshCw" size={14} className="text-accent" />
+            Следующее обновление хроники — после выхода 2-го сезона
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ АФИША ═══ */}
+      <section id="poster" className="py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, hsl(var(--primary)) 0 1px, transparent 1px 60px)' }} />
+        <div className="container relative">
+          <SectionTitle kicker="Релизы" title="Афиша" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Официальные плакаты и даты выхода — сохрани и не пропусти.</p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
+            {POSTERS.map((p, i) => (
+              <div
+                key={i}
+                className="group relative rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 cursor-pointer animate-scale-in"
+                style={{ animationDelay: `${i * 0.08}s`, opacity: 0 }}
+              >
+                {/* Плакат */}
+                <div className="relative aspect-[2/3] overflow-hidden">
+                  <img src={p.img} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ filter: 'saturate(0.85) contrast(1.05)' }} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/10 to-transparent" />
+
+                  {/* HOT метка */}
+                  {p.hot && (
+                    <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-display font-700">
+                      Доступен
+                    </div>
+                  )}
+
+                  {/* Скачать */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="glass rounded-full p-4">
+                      <Icon name="Download" size={22} className="text-primary" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Подпись */}
+                <div className="p-3 bg-card">
+                  <h3 className="font-display font-600 text-sm tracking-wide leading-tight">{p.title}</h3>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-xs text-accent">{p.sub}</span>
+                    <span className="text-xs text-muted-foreground">{p.date}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ЛЕНТА ПАМЯТИ 1929–1941 ═══ */}
+      <section id="timeline" className="py-28 relative overflow-hidden bg-card/30">
         <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(90deg, hsl(var(--primary)) 0 1px, transparent 1px 120px)' }} />
         <div className="container relative">
           <SectionTitle kicker="1929 — 1941" title="Лента памяти" />
           <p className="text-muted-foreground mt-4 max-w-lg">Перемещайся по годам эпохи — каждая точка хранит воспоминание, вплетённое в историю проекта.</p>
 
-          {/* Year track */}
           <div className="relative mt-16">
             <div className="absolute left-0 right-0 top-[14px] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             <div className="flex justify-between gap-2 overflow-x-auto pb-2 -mx-1 px-1">
@@ -275,7 +534,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Active memory card */}
           <div key={activeYear} className="mt-12 grid md:grid-cols-2 gap-8 items-center animate-fade-up">
             <div className="relative rounded-2xl overflow-hidden border border-border glow-amber">
               <img src={activeYear % 2 ? STILL_IMG : HERO_IMG} alt="" className="w-full h-72 object-cover" style={{ filter: 'sepia(0.45) contrast(1.05) brightness(0.85)' }} />
@@ -299,14 +557,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* MINUTE — ВИДЕО ЗА МИНУТУ */}
-      <section id="minute" className="py-28 relative bg-card/30">
+      {/* ═══ ВИДЕО ЗА МИНУТУ ═══ */}
+      <section id="minute" className="py-28 relative">
         <div className="container">
           <SectionTitle kicker="Один ролик · по кусочкам" title="Видео за минуту" />
           <p className="text-muted-foreground mt-4 max-w-lg">Большая история, разбитая на короткие фрагменты по 1–3 минуты. Смотри по частям — в любом порядке.</p>
 
           <div className="grid lg:grid-cols-[1.6fr_1fr] gap-8 mt-14">
-            {/* Player */}
             <div key={activeClip} className="relative rounded-2xl overflow-hidden border border-border bg-card glow-amber animate-scale-in">
               <div className="relative aspect-video">
                 <img src={activeClip % 2 ? HERO_IMG : STILL_IMG} alt="" className="w-full h-full object-cover" />
@@ -315,7 +572,6 @@ const Index = () => {
                     <Icon name="Play" size={32} className="text-primary fill-primary" />
                   </button>
                 </div>
-                {/* progress segments */}
                 <div className="absolute bottom-0 inset-x-0 p-4">
                   <div className="flex gap-1.5">
                     {MINUTE_CLIPS.map((_, i) => (
@@ -333,7 +589,6 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Playlist */}
             <div className="space-y-2.5">
               {MINUTE_CLIPS.map((c, i) => (
                 <button
@@ -359,8 +614,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section id="gallery" className="py-28">
+      {/* ═══ ГАЛЕРЕЯ ═══ */}
+      <section id="gallery" className="py-28 bg-card/30">
         <div className="container">
           <SectionTitle kicker="Кадры" title="Галерея" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-14">
@@ -380,8 +635,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ABOUT */}
-      <section id="about" className="py-28 relative bg-card/30">
+      {/* ═══ О ПРОЕКТЕ ═══ */}
+      <section id="about" className="py-28 relative">
         <div className="container grid md:grid-cols-2 gap-14 items-center">
           <div className="relative rounded-2xl overflow-hidden glow-amber animate-scale-in" style={{ opacity: 0 }}>
             <img src={STILL_IMG} alt="" className="w-full h-[420px] object-cover" />
@@ -390,7 +645,7 @@ const Index = () => {
           <div>
             <SectionTitle kicker="История" title="О проекте" />
             <p className="text-muted-foreground mt-6 leading-relaxed">
-              MEMORY PROJECT — это самостоятельная вселенная, рассказанная через шесть сезонов. Каждый сезон — новая глава, снятая с кинематографичным вниманием к атмосфере, свету и деталям.
+              MEMORY PROJECT — самостоятельная вселенная, рассказанная через шесть сезонов. Каждый сезон — новая глава, снятая с кинематографичным вниманием к атмосфере, свету и деталям.
             </p>
             <p className="text-muted-foreground mt-4 leading-relaxed">
               Мы создаём не просто ролики, а полноценное кинопространство: эксклюзивные кадры, бонусный контент и интерактив, который объединяет зрителей.
@@ -413,8 +668,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* COMMUNITY — VOTE FOR MOMENTS */}
-      <section id="community" className="py-28">
+      {/* ═══ СООБЩЕСТВО ═══ */}
+      <section id="community" className="py-28 bg-card/30">
         <div className="container">
           <SectionTitle kicker="Сообщество" title="Любимые моменты" />
           <p className="text-muted-foreground mt-4 max-w-lg">Голосуй за лучшие сцены сериала — самые любимые попадут в зал славы.</p>
@@ -437,7 +692,7 @@ const Index = () => {
                     disabled={isVoted}
                     className={`shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-xl border transition-all ${isVoted ? 'border-accent bg-accent/15 text-accent' : 'border-border hover:border-accent hover:text-accent'}`}
                   >
-                    <Icon name={isVoted ? 'Heart' : 'Heart'} size={20} className={isVoted ? 'fill-accent' : ''} />
+                    <Icon name="Heart" size={20} className={isVoted ? 'fill-accent' : ''} />
                     <span className="text-xs font-medium">{isVoted ? 'Учтён' : 'Голос'}</span>
                   </button>
                 </div>
@@ -450,7 +705,7 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60" />
             <div className="relative">
               <h3 className="font-display font-700 text-4xl md:text-5xl tracking-wide mb-4 text-gradient">Не пропусти 2 сезон</h3>
-              <p className="text-muted-foreground max-w-md mx-auto mb-8">Подпишись, чтобы первым узнать о премьерах новых сезонов и эксклюзивах.</p>
+              <p className="text-muted-foreground max-w-md mx-auto mb-8">Подпишись, чтобы первым узнать о премьерах и эксклюзивах.</p>
               <Button size="lg" className="rounded-full font-display tracking-wider glow-amber px-8">
                 <Icon name="Bell" size={18} className="mr-2" /> Подписаться на премьеры
               </Button>
@@ -459,7 +714,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ═══ FOOTER ═══ */}
       <footer className="border-t border-border py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-display font-700 tracking-[0.3em] text-primary">MEMORY</span>
