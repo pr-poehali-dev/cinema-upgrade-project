@@ -132,7 +132,8 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
           <div className="absolute inset-0 vignette" />
         </div>
-        <div className="absolute -bottom-40 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-glow-pulse" />
+        <div className="absolute -bottom-40 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[140px] animate-glow-pulse" />
+        <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
 
         <div className="container relative z-10 pt-20">
           <div className="max-w-2xl">
@@ -195,8 +196,8 @@ const Index = () => {
                     <span className="text-xs text-muted-foreground">{s.year}</span>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">{s.episodes} эпизодов</p>
-                  <span className={`inline-flex items-center gap-1.5 text-xs uppercase tracking-wider px-3 py-1 rounded-full ${s.locked ? 'bg-muted text-muted-foreground' : 'bg-primary/15 text-primary'}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${s.locked ? 'bg-muted-foreground' : 'bg-primary animate-pulse'}`} />
+                  <span className={`inline-flex items-center gap-1.5 text-xs uppercase tracking-wider px-3 py-1 rounded-full ${s.locked ? 'bg-accent/10 text-accent/70' : 'bg-primary/20 text-primary'}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${s.locked ? 'bg-accent/60' : 'bg-primary animate-pulse'}`} />
                     {s.status}
                   </span>
                 </div>
@@ -434,9 +435,9 @@ const Index = () => {
                   <button
                     onClick={() => vote(m.id, m.votes)}
                     disabled={isVoted}
-                    className={`shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-xl border transition-all ${isVoted ? 'border-primary bg-primary/15 text-primary' : 'border-border hover:border-primary hover:text-primary'}`}
+                    className={`shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-xl border transition-all ${isVoted ? 'border-accent bg-accent/15 text-accent' : 'border-border hover:border-accent hover:text-accent'}`}
                   >
-                    <Icon name={isVoted ? 'Heart' : 'Heart'} size={20} className={isVoted ? 'fill-primary' : ''} />
+                    <Icon name={isVoted ? 'Heart' : 'Heart'} size={20} className={isVoted ? 'fill-accent' : ''} />
                     <span className="text-xs font-medium">{isVoted ? 'Учтён' : 'Голос'}</span>
                   </button>
                 </div>
