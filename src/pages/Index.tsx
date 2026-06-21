@@ -13,14 +13,49 @@ const PHOTO_VOLOSHINA = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8ac
 
 const NAV = [
   { id: 'hero', label: 'Главная' },
+  { id: 'episodes', label: 'Эпизоды' },
   { id: 'seasons', label: 'Сезоны' },
   { id: 'heroes', label: 'Герои' },
-  { id: 'episodes', label: 'Эпизоды' },
   { id: 'chronicles', label: 'Хроника' },
+  { id: 'diary', label: 'Дневник' },
   { id: 'poster', label: 'Афиша' },
   { id: 'timeline', label: 'Лента памяти' },
   { id: 'minute', label: 'Видео за минуту' },
   { id: 'community', label: 'Сообщество' },
+];
+
+const SOCIALS = [
+  { name: 'ВКонтакте', icon: 'Users', url: 'https://vk.com', color: 'hover:text-blue-400' },
+  { name: 'Telegram', icon: 'Send', url: 'https://t.me', color: 'hover:text-sky-400' },
+  { name: 'YouTube', icon: 'Youtube', url: 'https://youtube.com', color: 'hover:text-accent' },
+  { name: 'RuTube', icon: 'Play', url: 'https://rutube.ru', color: 'hover:text-primary' },
+];
+
+const DIARY_ENTRIES = [
+  {
+    date: '23 июня 1941',
+    author: 'Н.В., Киев',
+    role: 'Очевидец',
+    text: 'Всю ночь слышали гул самолётов. Утром сказали — война. Слово это поначалу не укладывалось в голове. Казалось, что всё это скоро закончится...',
+  },
+  {
+    date: '15 октября 1941',
+    author: 'П.Г.А., действующая армия',
+    role: 'Боец',
+    text: 'Третий день без сна. Окоп уже стал родным домом. Ребята держатся. Письмо от матери получил вчера — читал три раза. Спрятал под гимнастёрку.',
+  },
+  {
+    date: '2 февраля 1943',
+    author: 'А.М., тыловой район',
+    role: 'Радистка',
+    text: 'Сталинград. По радио передали — победа. В штабе плакали все, кто был. Даже командир. Молча стояли и плакали. Никто не стыдился.',
+  },
+  {
+    date: '9 мая 1945',
+    author: 'В.В., Берлин',
+    role: 'Свидетель',
+    text: 'Стреляли в воздух. Обнимали незнакомых людей. Кто-то нашёл гармонь — играли прямо на улице. Я думала об одном: дождались.',
+  },
 ];
 
 const PARTNERS = [
@@ -182,6 +217,7 @@ const Index = () => {
   const [activeYear, setActiveYear] = useState(0);
   const [activeClip, setActiveClip] = useState(0);
   const [activeHero, setActiveHero] = useState<number | null>(null);
+  const [activeDiary, setActiveDiary] = useState(0);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -264,7 +300,20 @@ const Index = () => {
                 <Icon name="Users" size={16} className="mr-2" /> Герои
               </Button>
             </div>
-            <div className="flex gap-8 mt-14 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
+            {/* Соцсети в Hero */}
+            <div className="flex items-center gap-3 mt-8 animate-fade-in" style={{ animationDelay: '0.45s', opacity: 0 }}>
+              <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Смотреть в</span>
+              <div className="w-8 h-px bg-border" />
+              {SOCIALS.map((s) => (
+                <a key={s.name} href={s.url} target="_blank" rel="noreferrer"
+                  className={`border border-border px-3 py-1.5 text-xs font-display tracking-wide text-muted-foreground transition-all hover:border-primary hover:text-primary flex items-center gap-1.5`}
+                >
+                  <Icon name={s.icon} size={12} />
+                  {s.name}
+                </a>
+              ))}
+            </div>
+            <div className="flex gap-8 mt-10 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
               {[['6', 'сезонов'], ['48+', 'эпизодов'], ['9.4', 'рейтинг']].map(([v, l]) => (
                 <div key={l}>
                   <div className="font-display font-700 text-3xl text-primary">{v}</div>
@@ -286,8 +335,50 @@ const Index = () => {
         </button>
       </section>
 
+      {/* ═══ ЭПИЗОДЫ + РЕЙТИНГ ═══ */}
+      <section id="episodes" className="py-28 relative">
+        <div className="container">
+          <SectionTitle kicker="Сезон 1 · Начало" title="Эпизоды" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Оцени каждый эпизод — твои звёзды формируют рейтинг сериала.</p>
+          <div className="space-y-4 mt-14 max-w-4xl">
+            {EPISODES.map((e, i) => (
+              <div
+                key={e.n}
+                className="group flex flex-col sm:flex-row gap-5 p-4 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all animate-fade-up"
+                style={{ animationDelay: `${i * 0.08}s`, opacity: 0 }}
+              >
+                <div className="relative w-full sm:w-48 h-28 rounded-xl overflow-hidden shrink-0">
+                  <img src={i % 2 ? HERO_IMG : STILL_IMG} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-background/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="glass rounded-full p-3 glow-amber">
+                      <Icon name="Play" size={20} className="text-primary" />
+                    </div>
+                  </div>
+                  <span className="absolute bottom-2 right-2 glass text-xs px-2 py-0.5 rounded">{e.dur}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-1">
+                    <span className="font-display text-sm text-primary tracking-widest">ЭП. 0{e.n}</span>
+                  </div>
+                  <h3 className="font-display font-600 text-2xl tracking-wide mb-1">{e.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{e.desc}</p>
+                  <div className="flex items-center gap-3">
+                    <StarRating value={ratings[e.n] ?? 0} onChange={(v) => setRatings((p) => ({ ...p, [e.n]: v }))} />
+                    {ratings[e.n] ? (
+                      <span className="text-xs text-primary font-medium">Твоя оценка: {ratings[e.n]}/5</span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Оцени эпизод</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ СЕЗОНЫ ═══ */}
-      <section id="seasons" className="py-28 relative">
+      <section id="seasons" className="py-28 relative bg-card/30">
         <div className="container">
           <SectionTitle kicker="Хронология" title="Сезоны" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
@@ -380,48 +471,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ═══ ЭПИЗОДЫ + РЕЙТИНГ ═══ */}
-      <section id="episodes" className="py-28 relative">
-        <div className="container">
-          <SectionTitle kicker="Сезон 1 · Начало" title="Эпизоды" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Оцени каждый эпизод — твои звёзды формируют рейтинг сериала.</p>
-          <div className="space-y-4 mt-14 max-w-4xl">
-            {EPISODES.map((e, i) => (
-              <div
-                key={e.n}
-                className="group flex flex-col sm:flex-row gap-5 p-4 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all animate-fade-up"
-                style={{ animationDelay: `${i * 0.08}s`, opacity: 0 }}
-              >
-                <div className="relative w-full sm:w-48 h-28 rounded-xl overflow-hidden shrink-0">
-                  <img src={i % 2 ? HERO_IMG : STILL_IMG} alt="" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-background/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="glass rounded-full p-3 glow-amber">
-                      <Icon name="Play" size={20} className="text-primary" />
-                    </div>
-                  </div>
-                  <span className="absolute bottom-2 right-2 glass text-xs px-2 py-0.5 rounded">{e.dur}</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="font-display text-sm text-primary tracking-widest">ЭП. 0{e.n}</span>
-                  </div>
-                  <h3 className="font-display font-600 text-2xl tracking-wide mb-1">{e.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-3">{e.desc}</p>
-                  <div className="flex items-center gap-3">
-                    <StarRating value={ratings[e.n] ?? 0} onChange={(v) => setRatings((p) => ({ ...p, [e.n]: v }))} />
-                    {ratings[e.n] ? (
-                      <span className="text-xs text-primary font-medium">Твоя оценка: {ratings[e.n]}/5</span>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">Оцени эпизод</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══ ХРОНИКА ОПЕРАЦИЙ И ПОДВИГОВ ═══ */}
       <section id="chronicles" className="py-28 relative bg-card/30 overflow-hidden">
         {/* Декоративная вертикаль */}
@@ -465,6 +514,85 @@ const Index = () => {
           <div className="mt-10 flex items-center gap-3 text-sm text-muted-foreground animate-fade-in">
             <Icon name="RefreshCw" size={14} className="text-accent" />
             Следующее обновление хроники — после выхода 2-го сезона
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ДНЕВНИК ОЧЕВИДЦА ═══ */}
+      <section id="diary" className="py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, hsl(var(--foreground)) 0 1px, transparent 1px 32px)' }} />
+        <div className="container relative">
+          <SectionTitle kicker="Голоса эпохи" title="Дневник очевидца" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Подлинные слова людей, переживших эти события. Листай страницы — каждая запись из разного года войны.</p>
+
+          <div className="mt-14 grid lg:grid-cols-[1fr_380px] gap-8 items-start">
+            {/* Страница дневника */}
+            <div key={activeDiary} className="relative border border-border bg-card animate-fade-up" style={{ opacity: 0 }}>
+              {/* Имитация тетрадного листа */}
+              <div className="absolute left-14 top-0 bottom-0 w-px bg-accent/20 pointer-events-none" />
+              <div className="absolute left-0 top-0 bottom-0 w-10 bg-muted/30 pointer-events-none" />
+
+              <div className="pl-16 pr-8 py-10">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <p className="font-display text-xs tracking-[0.35em] text-accent uppercase">{DIARY_ENTRIES[activeDiary].date}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{DIARY_ENTRIES[activeDiary].author} · {DIARY_ENTRIES[activeDiary].role}</p>
+                  </div>
+                  <span className="font-display text-6xl text-border select-none">{String(activeDiary + 1).padStart(2, '0')}</span>
+                </div>
+
+                <blockquote className="font-sans text-xl leading-[1.9] text-foreground/90 italic border-l-2 border-primary pl-6">
+                  {DIARY_ENTRIES[activeDiary].text}
+                </blockquote>
+
+                <div className="mt-10 flex items-center justify-between">
+                  <div className="flex gap-1">
+                    {DIARY_ENTRIES.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveDiary(i)}
+                        className={`h-0.5 transition-all duration-300 ${activeDiary === i ? 'w-8 bg-primary' : 'w-3 bg-border hover:bg-muted-foreground'}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setActiveDiary(p => Math.max(0, p - 1))}
+                      disabled={activeDiary === 0}
+                      className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30"
+                    >
+                      <Icon name="ChevronLeft" size={16} />
+                    </button>
+                    <button
+                      onClick={() => setActiveDiary(p => Math.min(DIARY_ENTRIES.length - 1, p + 1))}
+                      disabled={activeDiary === DIARY_ENTRIES.length - 1}
+                      className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30"
+                    >
+                      <Icon name="ChevronRight" size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Список записей */}
+            <div className="space-y-2">
+              <p className="font-display text-xs tracking-[0.3em] text-muted-foreground uppercase mb-5">Все записи</p>
+              {DIARY_ENTRIES.map((d, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveDiary(i)}
+                  className={`w-full text-left p-4 border transition-all duration-300 ${activeDiary === i ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/40 bg-card'}`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-display text-xs text-primary tracking-wider">{d.date}</span>
+                    {activeDiary === i && <Icon name="BookOpen" size={12} className="text-primary" />}
+                  </div>
+                  <p className="font-display text-sm tracking-wide truncate">{d.author}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{d.role}</p>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -748,16 +876,35 @@ const Index = () => {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-border py-10">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-display font-700 tracking-[0.3em] text-primary">MEMORY</span>
-          <p className="text-xs text-muted-foreground">© 2024–2027 MEMORY PROJECT · Все права защищены</p>
-          <div className="flex gap-3">
-            {['Send', 'Youtube', 'Instagram'].map((s) => (
-              <button key={s} className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors">
-                <Icon name={s} size={16} />
-              </button>
+      <footer className="border-t border-border pt-12 pb-8">
+        <div className="container">
+          {/* Соцсети крупно */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px border border-border bg-border mb-10">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-background hover:bg-card transition-colors p-5 flex items-center gap-3 group"
+              >
+                <span className="w-8 h-8 border border-border flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-colors text-muted-foreground">
+                  <Icon name={s.icon} size={16} />
+                </span>
+                <div>
+                  <p className="font-display text-sm tracking-wide group-hover:text-primary transition-colors">{s.name}</p>
+                  <p className="text-xs text-muted-foreground">Подписаться</p>
+                </div>
+                <Icon name="ArrowUpRight" size={14} className="ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
+              </a>
             ))}
+          </div>
+
+          {/* Нижняя строка */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <span className="font-display font-700 tracking-[0.3em] text-primary text-xl">ПАМЯТЬ</span>
+            <p className="text-xs text-muted-foreground text-center">Художественно-документальный сериал · 16+ · © 2024–2027 MEMORY PROJECT</p>
+            <p className="text-xs text-muted-foreground">Все права защищены</p>
           </div>
         </div>
       </footer>
