@@ -204,7 +204,7 @@ const Index = () => {
               </button>
             ))}
           </div>
-          <Button size="sm" onClick={() => scrollTo('episodes')} className="rounded-full font-display tracking-wider">
+          <Button size="sm" onClick={() => scrollTo('episodes')} className="font-display tracking-wider">
             <Icon name="Play" size={14} className="mr-1" /> Смотреть
           </Button>
         </nav>
@@ -222,8 +222,7 @@ const Index = () => {
             playsInline
             poster={HERO_IMG}
           >
-            {/* Замените src на ссылку на ваш видеотизер */}
-            <source src="" type="video/mp4" />
+            <source src="https://edge-msk-11.kinescopecdn.net/9a9d4c43-ff34-4a41-bd30-098930953d71/videos/064ef0bc-2243-4382-a25f-cb9900c84b9f/mp4/019eeb2d-3337-7573-8931-b789db0312bb/019eeb2d-2e5b-79c9-a67d-0fe8de5b212f.mp4" type="video/mp4" />
           </video>
           {/* Если видео не загрузилось — показываем картинку */}
           <img src={HERO_IMG} alt="" className="absolute inset-0 w-full h-full object-cover -z-10" />
@@ -249,10 +248,10 @@ const Index = () => {
               Кинематографичная история, разворачивающаяся через шесть сезонов. Эпизоды, эксклюзивы и атмосфера большого кино.
             </p>
             <div className="flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
-              <Button size="lg" onClick={() => scrollTo('episodes')} className="rounded-full font-display tracking-wider glow-amber text-base px-8">
+              <Button size="lg" onClick={() => scrollTo('episodes')} className="font-display tracking-wider glow-amber text-base px-8">
                 <Icon name="Play" size={18} className="mr-2" /> Смотреть эпизоды
               </Button>
-              <Button size="lg" variant="outline" onClick={() => scrollTo('heroes')} className="rounded-full font-display tracking-wider text-base px-8 border-border">
+              <Button size="lg" variant="outline" onClick={() => scrollTo('heroes')} className="font-display tracking-wider text-base px-8 border-border">
                 <Icon name="Users" size={16} className="mr-2" /> Герои
               </Button>
             </div>

@@ -38,7 +38,7 @@
     --input: 180 6% 16%;
     --ring: 31 100% 49%;
 
-    --radius: 0.5rem;
+    --radius: 0px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -107,6 +107,11 @@
 
   ::selection {
     @apply bg-primary text-primary-foreground;
+  }
+
+  /* Сохраняем круглые декоративные элементы (блобы, точки-индикаторы) */
+  .rounded-circle {
+    border-radius: 50% !important;
   }
 }
 
