@@ -4,9 +4,12 @@ import { Button } from '@/components/ui/button';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/b81f7a66-4293-4516-95b1-92db22ccd464.jpg';
 const STILL_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/fd1dfb0d-6656-4ce9-ab8d-30e38475d631.jpg';
-const HERO1_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/02ebf0d8-7514-49c5-b12b-aea7088b6bde.jpg';
-const HERO2_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/8d833056-7e3a-4ca0-add1-063e70258440.jpg';
-const POSTER_IMG = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/01126768-c46a-4483-9065-a1cf2d7224d1.jpg';
+
+const POSTER_MAIN = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/bucket/95e2477f-6689-448b-a579-c0019ba0d497.png';
+const PHOTO_KUDRYA = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/bucket/833607ee-175c-4735-8623-124ae0be51fa.jpg';
+const PHOTO_ALEKS = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/bucket/e15a599e-6e60-4fe2-a9bb-71eb0488e062.jpg';
+const PHOTO_MOROZOVA = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/bucket/8a6f5c80-698f-4b1c-b8a4-a2a0ca05f781.jpg';
+const PHOTO_VOLOSHINA = 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/bucket/cd6a6139-136c-4b75-b2a5-efcdba08bf85.jpg';
 
 const NAV = [
   { id: 'hero', label: 'Главная' },
@@ -32,36 +35,36 @@ const SEASONS = [
 
 const HEROES = [
   {
-    name: 'Алексей Громов',
-    role: 'Командир разведки',
-    img: HERO1_IMG,
-    feat: 'В одиночку обеспечил отход батальона под Смоленском. Вернулся за ранеными трижды.',
-    years: '1909–1943',
-    badge: 'Главный герой',
+    name: 'Иван Данилович Кудря',
+    role: 'Разведчик-нелегал',
+    img: PHOTO_KUDRYA,
+    feat: 'Руководил разведывательной сетью в оккупированном Киеве. Передавал данные о немецких войсках вплоть до ареста в 1942 году. Герой Советского Союза посмертно.',
+    years: '1912–1942',
+    badge: 'Сезон 1',
   },
   {
-    name: 'Мария Светлова',
-    role: 'Связная подполья',
-    img: HERO2_IMG,
-    feat: 'Переправила через линию фронта 47 секретных донесений. Ни одно не было перехвачено.',
-    years: '1918–1945',
-    badge: 'Ключевой персонаж',
+    name: 'Павел Гаврилович Алексахин',
+    role: 'Участник подполья',
+    img: PHOTO_ALEKS,
+    feat: 'Боец советского сопротивления. Участвовал в организации подпольной работы на оккупированной территории в годы Великой Отечественной войны.',
+    years: '1920-е–1940-е',
+    badge: 'Эпизод 4',
   },
   {
-    name: 'Пётр Зайцев',
-    role: 'Сапёр',
-    img: HERO_IMG,
-    feat: 'Разминировал переправу за 12 минут под артобстрелом. Спас переход двух полков.',
-    years: '1912–1941',
-    badge: 'Эпизод 3',
-  },
-  {
-    name: 'Нина Орлова',
-    role: 'Военный врач',
-    img: STILL_IMG,
-    feat: '18 часов непрерывных операций после взятия Киева. Выжило 34 из 36 раненых.',
-    years: '1920–1990',
+    name: 'Анна Морозова',
+    role: 'Радистка подполья',
+    img: PHOTO_MOROZOVA,
+    feat: 'Радистка партизанского отряда «Артур». Обеспечивала связь с Большой землёй в глубоком немецком тылу. Погибла в бою в 1944 году. Герой Советского Союза посмертно.',
+    years: '1921–1944',
     badge: 'Сезон 2',
+  },
+  {
+    name: 'Вера Волошина',
+    role: 'Разведчица',
+    img: PHOTO_VOLOSHINA,
+    feat: 'Разведчица-диверсант, заброшенная в тыл врага под Москвой в 1941 году. Схвачена и казнена немцами в тот же день, что и Зоя Космодемьянская. Герой России посмертно.',
+    years: '1919–1941',
+    badge: 'Сезон 1',
   },
 ];
 
@@ -97,10 +100,9 @@ const CHRONICLES = [
 ];
 
 const POSTERS = [
-  { title: 'Сезон 1: Начало', sub: 'Уже доступен', date: '2024', img: POSTER_IMG, hot: true },
-  { title: 'Сезон 2: Разлом', sub: 'Премьера', date: '2025', img: HERO_IMG, hot: false },
-  { title: 'Сезон 2 · Трейлер', sub: 'Скоро', date: 'Лето 2025', img: STILL_IMG, hot: false },
-  { title: 'Эксклюзив', sub: 'Закрытый показ', date: '???', img: HERO1_IMG, hot: false },
+  { title: 'Сезон 1: Начало', sub: 'Уже доступен', date: '1 сентября 2024', img: POSTER_MAIN, hot: true },
+  { title: 'Сезон 2: Разлом', sub: 'Скоро', date: '2025', img: POSTER_MAIN, hot: false },
+  { title: 'Эксклюзивный сезон', sub: 'Закрытый показ', date: '???', img: POSTER_MAIN, hot: false },
 ];
 
 const TIMELINE = [
@@ -134,7 +136,7 @@ const MOMENTS = [
   { id: 4, text: 'Молчаливый диалог', votes: 631 },
 ];
 
-const GALLERY = [HERO_IMG, STILL_IMG, HERO1_IMG, HERO2_IMG, STILL_IMG, HERO_IMG];
+const GALLERY = [POSTER_MAIN, PHOTO_KUDRYA, PHOTO_ALEKS, PHOTO_MOROZOVA, PHOTO_VOLOSHINA, HERO_IMG];
 
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [hover, setHover] = useState(0);
@@ -464,42 +466,66 @@ const Index = () => {
       <section id="poster" className="py-28 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, hsl(var(--primary)) 0 1px, transparent 1px 60px)' }} />
         <div className="container relative">
-          <SectionTitle kicker="Релизы" title="Афиша" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Официальные плакаты и даты выхода — сохрани и не пропусти.</p>
+          <SectionTitle kicker="Официальный плакат" title="Афиша" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Художественно-документальный сериал «ПАМЯТЬ». 1 сезон с 1 сентября.</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-            {POSTERS.map((p, i) => (
+          {/* Главный плакат — баннер */}
+          <div className="mt-14 group relative overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 cursor-pointer animate-scale-in glow-amber" style={{ opacity: 0 }}>
+            <div className="relative w-full overflow-hidden" style={{ maxHeight: '520px' }}>
+              <img
+                src={POSTER_MAIN}
+                alt="Плакат ПАМЯТЬ"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+
+              {/* Метка доступен */}
+              <div className="absolute top-5 left-5 bg-primary text-primary-foreground text-xs uppercase tracking-widest px-4 py-2 font-display font-700">
+                1 СЕЗОН — СМОТРЕТЬ
+              </div>
+
+              {/* Скачать */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="glass p-5 border border-primary/40">
+                  <Icon name="Download" size={28} className="text-primary" />
+                </div>
+              </div>
+
+              {/* Подпись */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
+                <div>
+                  <p className="font-display font-700 text-3xl md:text-4xl tracking-wide text-foreground">{POSTERS[0].title}</p>
+                  <p className="text-muted-foreground text-sm mt-1">Художественно-документальный сериал · 16+</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-accent text-sm font-display tracking-wider uppercase">{POSTERS[0].sub}</span>
+                  <p className="text-muted-foreground text-xs mt-0.5">{POSTERS[0].date}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Ожидаемые релизы */}
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            {POSTERS.slice(1).map((p, i) => (
               <div
                 key={i}
-                className="group relative rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 cursor-pointer animate-scale-in"
-                style={{ animationDelay: `${i * 0.08}s`, opacity: 0 }}
+                className="group relative overflow-hidden border border-border hover:border-primary/30 transition-all duration-500 cursor-pointer animate-fade-up"
+                style={{ animationDelay: `${i * 0.1}s`, opacity: 0 }}
               >
-                {/* Плакат */}
-                <div className="relative aspect-[2/3] overflow-hidden">
-                  <img src={p.img} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ filter: 'saturate(0.85) contrast(1.05)' }} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/10 to-transparent" />
-
-                  {/* HOT метка */}
-                  {p.hot && (
-                    <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-display font-700">
-                      Доступен
+                <div className="relative overflow-hidden" style={{ maxHeight: '280px' }}>
+                  <img src={p.img} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" style={{ filter: 'brightness(0.5) saturate(0.6)' }} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
+                    <div>
+                      <p className="font-display font-700 text-xl tracking-wide">{p.title}</p>
+                      <span className="text-xs text-accent uppercase tracking-widest">{p.sub}</span>
                     </div>
-                  )}
-
-                  {/* Скачать */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="glass rounded-full p-4">
-                      <Icon name="Download" size={22} className="text-primary" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Подпись */}
-                <div className="p-3 bg-card">
-                  <h3 className="font-display font-600 text-sm tracking-wide leading-tight">{p.title}</h3>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-accent">{p.sub}</span>
                     <span className="text-xs text-muted-foreground">{p.date}</span>
+                  </div>
+                  <div className="absolute top-3 right-3">
+                    <Icon name="Lock" size={16} className="text-muted-foreground" />
                   </div>
                 </div>
               </div>
