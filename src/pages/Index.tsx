@@ -9,9 +9,28 @@ const NAV = [
   { id: 'hero', label: 'Главная' },
   { id: 'seasons', label: 'Сезоны' },
   { id: 'episodes', label: 'Эпизоды' },
+  { id: 'timeline', label: 'Лента памяти' },
+  { id: 'minute', label: 'Видео за минуту' },
   { id: 'gallery', label: 'Галерея' },
   { id: 'about', label: 'О проекте' },
   { id: 'community', label: 'Сообщество' },
+];
+
+const TIMELINE = [
+  { year: 1929, title: 'Великий перелом', text: 'Начало эпохи перемен. Страна меняется на глазах — индустриализация набирает обороты.' },
+  { year: 1932, title: 'Первая пятилетка', text: 'Стройки века и трудовые подвиги. Время надежд и тяжёлых испытаний.' },
+  { year: 1934, title: 'Новый ритм', text: 'Города растут, заводы дымят. Жизнь героев нашей истории переплетается с эпохой.' },
+  { year: 1937, title: 'Тревожное затишье', text: 'Тени сгущаются. Каждый шаг становится выбором между правдой и выживанием.' },
+  { year: 1939, title: 'Накануне', text: 'Мир балансирует на грани. Воспоминания этого года — самые острые в проекте.' },
+  { year: 1941, title: 'Рубеж', text: 'Год, изменивший всё. Финальная точка ленты памяти и начало новой главы.' },
+];
+
+const MINUTE_CLIPS = [
+  { n: 1, title: 'Открытие', dur: '1:00', desc: 'Первая минута истории — атмосфера задаётся с первого кадра.' },
+  { n: 2, title: 'Знакомство', dur: '1:30', desc: 'Герои выходят на сцену. Кто они и что ими движет.' },
+  { n: 3, title: 'Поворот', dur: '2:15', desc: 'Событие, после которого ничего не будет прежним.' },
+  { n: 4, title: 'Кульминация', dur: '3:00', desc: 'Самый напряжённый фрагмент — три минуты на одном дыхании.' },
+  { n: 5, title: 'Развязка', dur: '1:45', desc: 'Эпилог, который оставляет вопросы и предвкушение.' },
 ];
 
 const SEASONS = [
@@ -67,6 +86,8 @@ const Index = () => {
   const [ratings, setRatings] = useState<Record<number, number>>({});
   const [votes, setVotes] = useState<Record<number, number>>({});
   const [voted, setVoted] = useState<Set<number>>(new Set());
+  const [activeYear, setActiveYear] = useState(0);
+  const [activeClip, setActiveClip] = useState(0);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -223,6 +244,116 @@ const Index = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TIMELINE — ЛЕНТА ПАМЯТИ 1929–1941 */}
+      <section id="timeline" className="py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(90deg, hsl(var(--primary)) 0 1px, transparent 1px 120px)' }} />
+        <div className="container relative">
+          <SectionTitle kicker="1929 — 1941" title="Лента памяти" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Перемещайся по годам эпохи — каждая точка хранит воспоминание, вплетённое в историю проекта.</p>
+
+          {/* Year track */}
+          <div className="relative mt-16">
+            <div className="absolute left-0 right-0 top-[14px] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+            <div className="flex justify-between gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+              {TIMELINE.map((t, i) => (
+                <button
+                  key={t.year}
+                  onClick={() => setActiveYear(i)}
+                  className="group relative flex flex-col items-center gap-3 shrink-0"
+                >
+                  <span className={`w-3.5 h-3.5 rounded-full border-2 transition-all duration-300 ${activeYear === i ? 'bg-primary border-primary scale-125 shadow-[0_0_18px_hsl(var(--primary))]' : 'bg-background border-muted-foreground group-hover:border-primary'}`} />
+                  <span className={`font-display font-700 text-2xl md:text-3xl tracking-wider transition-colors ${activeYear === i ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                    {t.year}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Active memory card */}
+          <div key={activeYear} className="mt-12 grid md:grid-cols-2 gap-8 items-center animate-fade-up">
+            <div className="relative rounded-2xl overflow-hidden border border-border glow-amber">
+              <img src={activeYear % 2 ? STILL_IMG : HERO_IMG} alt="" className="w-full h-72 object-cover" style={{ filter: 'sepia(0.45) contrast(1.05) brightness(0.85)' }} />
+              <div className="absolute inset-0 vignette" />
+              <span className="absolute bottom-4 left-5 font-display font-700 text-6xl text-primary/90">{TIMELINE[activeYear].year}</span>
+            </div>
+            <div>
+              <span className="inline-block font-display tracking-[0.3em] text-accent text-xs uppercase mb-3">Воспоминание</span>
+              <h3 className="font-display font-700 text-4xl tracking-wide mb-4">{TIMELINE[activeYear].title}</h3>
+              <p className="text-muted-foreground leading-relaxed text-lg">{TIMELINE[activeYear].text}</p>
+              <div className="flex gap-3 mt-8">
+                <Button variant="outline" className="rounded-full border-border" onClick={() => setActiveYear((p) => Math.max(0, p - 1))} disabled={activeYear === 0}>
+                  <Icon name="ChevronLeft" size={16} className="mr-1" /> Раньше
+                </Button>
+                <Button variant="outline" className="rounded-full border-border" onClick={() => setActiveYear((p) => Math.min(TIMELINE.length - 1, p + 1))} disabled={activeYear === TIMELINE.length - 1}>
+                  Позже <Icon name="ChevronRight" size={16} className="ml-1" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MINUTE — ВИДЕО ЗА МИНУТУ */}
+      <section id="minute" className="py-28 relative bg-card/30">
+        <div className="container">
+          <SectionTitle kicker="Один ролик · по кусочкам" title="Видео за минуту" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Большая история, разбитая на короткие фрагменты по 1–3 минуты. Смотри по частям — в любом порядке.</p>
+
+          <div className="grid lg:grid-cols-[1.6fr_1fr] gap-8 mt-14">
+            {/* Player */}
+            <div key={activeClip} className="relative rounded-2xl overflow-hidden border border-border bg-card glow-amber animate-scale-in">
+              <div className="relative aspect-video">
+                <img src={activeClip % 2 ? HERO_IMG : STILL_IMG} alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-background/40 flex items-center justify-center">
+                  <button className="glass rounded-full p-6 glow-amber hover:scale-110 transition-transform">
+                    <Icon name="Play" size={32} className="text-primary fill-primary" />
+                  </button>
+                </div>
+                {/* progress segments */}
+                <div className="absolute bottom-0 inset-x-0 p-4">
+                  <div className="flex gap-1.5">
+                    {MINUTE_CLIPS.map((_, i) => (
+                      <span key={i} className={`h-1 flex-1 rounded-full transition-all ${i < activeClip ? 'bg-primary' : i === activeClip ? 'bg-primary animate-glow-pulse' : 'bg-muted'}`} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-5 flex items-center justify-between">
+                <div>
+                  <span className="font-display text-xs text-primary tracking-widest">ФРАГМЕНТ {activeClip + 1} / {MINUTE_CLIPS.length}</span>
+                  <h3 className="font-display font-600 text-2xl tracking-wide">{MINUTE_CLIPS[activeClip].title}</h3>
+                </div>
+                <span className="glass px-3 py-1 rounded-full text-sm text-primary font-medium">{MINUTE_CLIPS[activeClip].dur}</span>
+              </div>
+            </div>
+
+            {/* Playlist */}
+            <div className="space-y-2.5">
+              {MINUTE_CLIPS.map((c, i) => (
+                <button
+                  key={c.n}
+                  onClick={() => setActiveClip(i)}
+                  className={`w-full text-left flex items-center gap-4 p-3 rounded-xl border transition-all ${activeClip === i ? 'border-primary bg-primary/10' : 'border-border bg-card hover:border-primary/40'}`}
+                >
+                  <span className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-display font-700 ${activeClip === i ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                    {c.n}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-display font-600 tracking-wide truncate">{c.title}</span>
+                      {activeClip === i && <Icon name="Volume2" size={14} className="text-primary shrink-0" />}
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate">{c.desc}</p>
+                  </div>
+                  <span className="shrink-0 text-xs text-muted-foreground">{c.dur}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
