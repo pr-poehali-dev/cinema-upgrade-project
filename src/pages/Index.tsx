@@ -20,8 +20,15 @@ const NAV = [
   { id: 'poster', label: 'Афиша' },
   { id: 'timeline', label: 'Лента памяти' },
   { id: 'minute', label: 'Видео за минуту' },
-  { id: 'gallery', label: 'Галерея' },
   { id: 'community', label: 'Сообщество' },
+];
+
+const PARTNERS = [
+  { name: 'SHAG', sub: 'Продюсерский центр' },
+  { name: 'Федеральный подростковый центр', sub: 'Федеральный партнёр' },
+  { name: 'ИНТЕГРАЦИЯ', sub: 'Продюсерский центр' },
+  { name: 'АРТЕФАКТ МЕДИА', sub: 'Медиапартнёр' },
+  { name: 'Фонд добрых технологий', sub: 'Партнёр проекта' },
 ];
 
 const SEASONS = [
@@ -136,7 +143,7 @@ const MOMENTS = [
   { id: 4, text: 'Молчаливый диалог', votes: 631 },
 ];
 
-const GALLERY = [POSTER_MAIN, PHOTO_KUDRYA, PHOTO_ALEKS, PHOTO_MOROZOVA, PHOTO_VOLOSHINA, HERO_IMG];
+
 
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [hover, setHover] = useState(0);
@@ -639,20 +646,21 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ═══ ГАЛЕРЕЯ ═══ */}
-      <section id="gallery" className="py-28 bg-card/30">
+      {/* ═══ ПАРТНЁРЫ ═══ */}
+      <section id="partners" className="py-20 border-t border-border">
         <div className="container">
-          <SectionTitle kicker="Кадры" title="Галерея" />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-14">
-            {GALLERY.map((img, i) => (
+          <SectionTitle kicker="При поддержке" title="Партнёры" />
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px border border-border bg-border animate-fade-up" style={{ opacity: 0 }}>
+            {PARTNERS.map((p, i) => (
               <div
                 key={i}
-                className={`group relative overflow-hidden rounded-xl cursor-pointer animate-scale-in ${i === 0 ? 'col-span-2 row-span-2' : ''}`}
-                style={{ animationDelay: `${i * 0.06}s`, opacity: 0 }}
+                className="bg-background hover:bg-card transition-colors duration-300 p-6 flex flex-col justify-between gap-3 group cursor-pointer"
+                style={{ animationDelay: `${i * 0.07}s` }}
               >
-                <img src={img} alt="" className={`w-full object-cover transition-transform duration-700 group-hover:scale-110 ${i === 0 ? 'h-full min-h-[300px]' : 'h-44'}`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                  <span className="font-display text-sm tracking-widest text-foreground">КАДР 0{i + 1}</span>
+                <div className="w-8 h-px bg-primary group-hover:w-14 transition-all duration-300" />
+                <div>
+                  <p className="font-display font-700 text-sm tracking-wide leading-tight">{p.name}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{p.sub}</p>
                 </div>
               </div>
             ))}
