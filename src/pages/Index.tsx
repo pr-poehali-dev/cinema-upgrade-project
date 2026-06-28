@@ -420,8 +420,11 @@ const Index = () => {
   const [activeHero, setActiveHero] = useState<number | null>(null);
   const [activeDiary, setActiveDiary] = useState(0);
   const [activeCity, setActiveCity] = useState(0);
+  const [cityPanelTab, setCityPanelTab] = useState<'Справка'|'Факты'|'Статистика'>('Справка');
   const [activeGroup, setActiveGroup] = useState('center');
-  const [activeGroupTab, setActiveGroupTab] = useState<'german'|'soviet'>('german');
+  const [activeGroupTab, setActiveGroupTab] = useState<'soviet'|'german'>('soviet');
+  const [activeRoadIdx, setActiveRoadIdx] = useState<number|null>(null);
+  const [activeDigit, setActiveDigit] = useState<number|null>(null);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -1080,75 +1083,131 @@ const Index = () => {
       </section>
 
       {/* ═══ ГОРОДА-ГЕРОИ ═══ */}
-      <section id="hero-cities" className="py-28 relative overflow-hidden bg-card/20">
+      <section id="hero-cities" className="py-20 relative overflow-hidden bg-card/20">
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
         <div className="container relative">
           <SectionTitle kicker="Слава навечно" title="Города-герои" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Каждый город — отдельный подвиг. Листай слайды, нажимай на город — открывается полная история.</p>
+          <p className="text-muted-foreground mt-3 max-w-lg text-sm">Каждый город — отдельный подвиг. Листай слайды и изучай историю.</p>
 
-          {/* Слайдер */}
-          <div className="mt-14 relative">
+          <div className="mt-8 relative">
             <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${activeCity * 100}%)` }}
-              >
+              <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${activeCity * 100}%)` }}>
                 {HERO_CITIES.map((city, i) => (
                   <div key={city.name} className="min-w-full">
-                    <div className="grid lg:grid-cols-[1fr_420px] gap-0 border border-border overflow-hidden">
-                      {/* Фото */}
-                      <div className="relative h-72 lg:h-auto overflow-hidden">
-                        <img src={city.img} alt={city.name} className="w-full h-full object-cover" style={{ filter: 'contrast(1.1) saturate(0.3) brightness(0.75)' }} />
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/90 hidden lg:block" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card/95 to-transparent lg:hidden" />
-                        <div className="absolute bottom-6 left-6">
-                          <p className="font-display text-xs tracking-[0.35em] text-accent uppercase mb-1">{city.years}</p>
-                          <h2 className="font-display font-700 text-5xl text-foreground">{city.name}</h2>
-                          <p className="text-muted-foreground text-sm mt-1">Медаль «Город-герой» — {city.medal}</p>
+                    <div className="grid lg:grid-cols-[420px_1fr] gap-0 border border-border overflow-hidden">
+
+                      {/* ФОТО — меньше, название ВВЕРХУ */}
+                      <div className="relative h-52 lg:h-[380px] overflow-hidden">
+                        <img src={city.img} alt={city.name} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" style={{ filter: 'contrast(1.1) saturate(0.2) brightness(0.6)' }} />
+                        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/60" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/50 hidden lg:block" />
+                        {/* НАЗВАНИЕ СВЕРХУ */}
+                        <div className="absolute top-5 left-5 right-5">
+                          <p className="font-display text-[10px] tracking-[0.4em] text-accent uppercase mb-1.5">{city.years}</p>
+                          <h2 className="font-display font-700 text-4xl lg:text-5xl text-white leading-none drop-shadow-lg">{city.name}</h2>
+                          <p className="text-white/60 text-xs mt-2 tracking-wider">Герой · Медаль {city.medal} г.</p>
                         </div>
-                        <div className="absolute top-5 right-5 border border-primary/40 bg-background/60 px-3 py-1.5 backdrop-blur-sm">
-                          <span className="font-display text-xs text-primary tracking-widest">{city.days} ДНЕЙ</span>
+                        {/* Дни снизу */}
+                        <div className="absolute bottom-5 left-5">
+                          <div className="border border-primary bg-background/80 px-3 py-1.5 inline-flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                            <span className="font-display font-700 text-primary text-sm tracking-widest">{city.days} ДНЕЙ</span>
+                          </div>
                         </div>
+                        {/* Номер слайда */}
+                        <div className="absolute bottom-5 right-5 font-display text-5xl text-white/10 font-700 leading-none select-none">{String(i+1).padStart(2,'0')}</div>
                       </div>
-                      {/* Контент */}
-                      <div className="bg-card p-8 flex flex-col justify-between">
-                        <div>
-                          <p className="font-display text-xs tracking-[0.3em] text-muted-foreground uppercase mb-4">Историческая справка</p>
-                          <p className="text-foreground/90 leading-relaxed mb-8">{city.desc}</p>
-                          <div className="space-y-2">
-                            {city.key.map((k, ki) => (
-                              <div key={ki} className="flex items-center gap-3">
-                                <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
-                                <span className="text-sm text-muted-foreground">{k}</span>
+
+                      {/* ПРАВАЯ ПАНЕЛЬ — 3 вкладки */}
+                      {(() => {
+                        const panelTabs = ['Справка', 'Факты', 'Статистика'] as const;
+                        type PT = typeof panelTabs[number];
+                        const [pt, setPt] = [cityPanelTab, setCityPanelTab];
+                        return (
+                          <div className="bg-card flex flex-col">
+                            {/* Вкладки */}
+                            <div className="flex border-b border-border">
+                              {panelTabs.map((tab) => (
+                                <button key={tab} onClick={() => setPt(tab)}
+                                  className={`flex-1 py-3 font-display text-xs tracking-widest uppercase transition-all duration-300 ${pt === tab ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-muted-foreground hover:text-foreground'}`}>
+                                  {tab}
+                                </button>
+                              ))}
+                            </div>
+
+                            {/* Контент вкладок */}
+                            <div className="flex-1 p-6">
+                              {pt === 'Справка' && (
+                                <div className="animate-fade-up" style={{opacity:0,animationFillMode:'forwards'}}>
+                                  <p className="font-display text-[10px] tracking-[0.3em] text-muted-foreground uppercase mb-4">Историческая справка</p>
+                                  <p className="text-foreground/90 leading-relaxed text-sm">{city.desc}</p>
+                                  <div className="mt-6 border-l-2 border-primary pl-4">
+                                    <p className="font-display font-700 text-3xl text-primary">{city.days}</p>
+                                    <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">дней обороны</p>
+                                  </div>
+                                </div>
+                              )}
+                              {pt === 'Факты' && (
+                                <div className="animate-fade-up" style={{opacity:0,animationFillMode:'forwards'}}>
+                                  <p className="font-display text-[10px] tracking-[0.3em] text-muted-foreground uppercase mb-4">Ключевые факты</p>
+                                  <div className="space-y-3">
+                                    {city.key.map((k, ki) => (
+                                      <div key={ki} className="flex items-start gap-3 group">
+                                        <div className="w-6 h-6 border border-primary/40 flex items-center justify-center shrink-0 mt-0.5 group-hover:border-primary group-hover:bg-primary/10 transition-all">
+                                          <span className="font-display text-[10px] text-primary">{ki+1}</span>
+                                        </div>
+                                        <p className="text-sm text-foreground/90 leading-relaxed">{k}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {pt === 'Статистика' && (
+                                <div className="animate-fade-up" style={{opacity:0,animationFillMode:'forwards'}}>
+                                  <p className="font-display text-[10px] tracking-[0.3em] text-muted-foreground uppercase mb-4">В цифрах</p>
+                                  <div className="grid grid-cols-2 gap-3">
+                                    {[
+                                      { v: city.days, l: 'Дней обороны', c: 'text-primary' },
+                                      { v: city.medal, l: 'Год медали', c: 'text-accent' },
+                                      { v: city.years.split('–')[0], l: 'Начало', c: 'text-foreground' },
+                                      { v: city.years.split('–')[1] || '1945', l: 'Конец', c: 'text-primary' },
+                                    ].map((s, si) => (
+                                      <div key={si} className="border border-border p-3 hover:border-primary/40 transition-colors">
+                                        <div className={`font-display font-700 text-2xl ${s.c}`}>{s.v}</div>
+                                        <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.l}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Навигация */}
+                            <div className="p-4 border-t border-border flex items-center justify-between">
+                              <span className="font-display text-xs text-muted-foreground tracking-widest">{i+1} / {HERO_CITIES.length}</span>
+                              <div className="flex gap-2">
+                                <button onClick={() => setActiveCity(p => Math.max(0, p-1))} disabled={activeCity === 0}
+                                  className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-25">
+                                  <Icon name="ChevronLeft" size={15} />
+                                </button>
+                                <button onClick={() => setActiveCity(p => Math.min(HERO_CITIES.length-1, p+1))} disabled={activeCity === HERO_CITIES.length-1}
+                                  className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-25">
+                                  <Icon name="ChevronRight" size={15} />
+                                </button>
                               </div>
-                            ))}
+                            </div>
                           </div>
-                        </div>
-                        <div className="mt-8 flex items-center justify-between pt-6 border-t border-border">
-                          <span className="font-display text-xs text-muted-foreground tracking-widest uppercase">{i + 1} / {HERO_CITIES.length}</span>
-                          <div className="flex gap-2">
-                            <button onClick={() => setActiveCity(p => Math.max(0, p - 1))} disabled={activeCity === 0}
-                              className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30">
-                              <Icon name="ChevronLeft" size={16} />
-                            </button>
-                            <button onClick={() => setActiveCity(p => Math.min(HERO_CITIES.length - 1, p + 1))} disabled={activeCity === HERO_CITIES.length - 1}
-                              className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30">
-                              <Icon name="ChevronRight" size={16} />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Точки навигации */}
-            <div className="flex gap-2 justify-center mt-6">
+            <div className="flex flex-wrap gap-1.5 justify-center mt-5">
               {HERO_CITIES.map((c, i) => (
                 <button key={i} onClick={() => setActiveCity(i)}
-                  className={`font-display text-xs tracking-wider px-3 py-1.5 border transition-all ${activeCity === i ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:border-primary/50'}`}>
+                  className={`font-display text-[11px] tracking-widest px-3 py-1.5 border transition-all duration-300 ${activeCity === i ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:border-primary/40'}`}>
                   {c.name}
                 </button>
               ))}
@@ -1158,93 +1217,147 @@ const Index = () => {
       </section>
 
       {/* ═══ ЦИФРЫ ПОДВИГА 1941 ═══ */}
-      <section id="digits" className="py-28 relative">
-        <div className="container">
-          <SectionTitle kicker="1941 год" title="Цифры подвига" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Сухие числа — за каждым стоят миллионы судеб. Самый тяжёлый год войны в фактах.</p>
+      <section id="digits" className="py-28 relative overflow-hidden">
+        {/* Фоновый год */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="font-display font-700 text-[20vw] text-foreground/[0.025] leading-none">1941</span>
+        </div>
+        <div className="container relative">
+          <SectionTitle kicker="В цифрах" title="Цифры подвига" />
+          <p className="text-muted-foreground mt-3 max-w-lg text-sm">За каждым числом — миллионы судеб. Нажми на карточку, чтобы узнать подробности.</p>
 
-          <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-px border border-border bg-border">
+          {/* Сетка карточек */}
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3">
             {DIGITS_1941.map((d, i) => (
-              <div
+              <button
                 key={i}
-                className="bg-background hover:bg-card transition-all duration-300 p-6 group cursor-default"
+                onClick={() => setActiveDigit(activeDigit === i ? null : i)}
+                className={`text-left p-5 border transition-all duration-400 group relative overflow-hidden ${activeDigit === i ? 'border-primary bg-primary/8' : 'border-border bg-card hover:border-primary/50 hover:bg-card/80'}`}
+                style={{ animationDelay: `${i * 0.06}s` }}
               >
-                <div className="mb-4">
-                  <span className="w-8 h-8 border border-border flex items-center justify-center text-muted-foreground group-hover:border-primary group-hover:text-primary transition-colors">
-                    <Icon name={d.icon} size={15} />
-                  </span>
+                {/* Фоновое число-призрак */}
+                <span className="absolute -bottom-2 -right-2 font-display font-700 text-6xl text-foreground/[0.04] leading-none select-none group-hover:text-primary/10 transition-colors">
+                  {String(i+1).padStart(2,'0')}
+                </span>
+                <div className={`w-8 h-8 border flex items-center justify-center mb-4 transition-all duration-300 ${activeDigit === i ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground group-hover:border-primary/60 group-hover:text-primary/80'}`}>
+                  <Icon name={d.icon} size={14} />
                 </div>
-                <div className={`font-display font-700 text-3xl md:text-4xl tracking-tight mb-3 ${d.color} group-hover:text-primary transition-colors`}>{d.value}</div>
-                <div className="w-6 h-px bg-border group-hover:w-10 group-hover:bg-primary transition-all duration-300 mb-3" />
-                <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-wide">{d.label}</p>
-              </div>
+                <div className={`font-display font-700 text-2xl md:text-3xl tracking-tight mb-2 transition-colors duration-300 ${activeDigit === i ? 'text-primary' : `${d.color} group-hover:text-foreground`}`}>
+                  {d.value}
+                </div>
+                {/* Линия-акцент */}
+                <div className={`h-px mb-3 transition-all duration-500 ${activeDigit === i ? 'bg-primary w-full' : 'bg-border w-6 group-hover:w-10 group-hover:bg-primary/50'}`} />
+                <p className={`text-xs leading-relaxed uppercase tracking-wider transition-colors ${activeDigit === i ? 'text-foreground/80' : 'text-muted-foreground'}`}>{d.label}</p>
+
+                {/* Раскрывающийся контент */}
+                <div className={`overflow-hidden transition-all duration-500 ${activeDigit === i ? 'max-h-20 mt-3 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="border-t border-primary/20 pt-3">
+                    <p className="text-xs text-primary/80 leading-relaxed">
+                      {i === 0 && 'Общая численность РККА на западных рубежах к 22 июня 1941 года.'}
+                      {i === 1 && 'Трагедия окружений: Белостокско-Минский, Киевский, Вяземский котлы.'}
+                      {i === 2 && 'Только за первый день войны — 22 июня 1941 года.'}
+                      {i === 3 && 'Германия нарушила пакт Молотова-Риббентропа 1939 года.'}
+                      {i === 4 && 'Из 190 дивизий — 153 были выставлены непосредственно против СССР.'}
+                      {i === 5 && 'По различным оценкам — от расстрелов, голода, бомбардировок.'}
+                      {i === 6 && 'Прибалтика, Белоруссия, Украина, Молдавия — под оккупацией.'}
+                      {i === 7 && 'Жуков, Рокоссовский, Конев — начали первое контрнаступление.'}
+                    </p>
+                  </div>
+                </div>
+                {/* Иконка раскрытия */}
+                <div className={`absolute top-3 right-3 transition-all duration-300 ${activeDigit === i ? 'text-primary rotate-45' : 'text-muted-foreground/40 group-hover:text-muted-foreground'}`}>
+                  <Icon name="Plus" size={14} />
+                </div>
+              </button>
             ))}
           </div>
 
-          {/* Большой акцент */}
-          <div className="mt-4 border border-primary/20 bg-primary/5 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-6">
-              <div className="font-display font-700 text-7xl text-primary/20 leading-none select-none">1941</div>
-              <div>
-                <p className="font-display font-700 text-2xl tracking-wide">Самый тяжёлый год</p>
-                <p className="text-muted-foreground text-sm mt-1 max-w-sm">СССР потерял треть своей территории, но не сломился. Контрнаступление под Москвой показало — Вермахт остановим.</p>
+          {/* Итоговый баннер */}
+          <div className="mt-5 relative border border-primary/30 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/5 pointer-events-none" />
+            <div className="relative p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-5">
+                <div className="shrink-0 w-1 self-stretch bg-primary" />
+                <div>
+                  <p className="font-display font-700 text-xl md:text-2xl tracking-wide">Мы выстояли</p>
+                  <p className="text-muted-foreground text-sm mt-1 max-w-sm leading-relaxed">
+                    Несмотря на катастрофические потери 1941 года — СССР не сломился. 5 декабря 1941 началось контрнаступление под Москвой.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="shrink-0 border border-primary/40 px-6 py-4 text-center">
-              <div className="font-display font-700 text-4xl text-primary">5 дек.</div>
-              <div className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">Начало перелома</div>
+              <div className="shrink-0 text-center">
+                <div className="font-display font-700 text-5xl text-primary">5 дек.</div>
+                <div className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">Начало перелома</div>
+                <div className="w-px h-6 bg-primary/30 mx-auto mt-2" />
+                <div className="font-display text-xs text-primary/60 tracking-widest">1941</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ═══ ДОРОГА ВОЙНЫ — ОПЕРАЦИИ 1941 ═══ */}
-      <section id="war-road" className="py-28 relative bg-card/20 overflow-hidden">
-        <div className="absolute left-1/2 top-20 bottom-20 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent pointer-events-none hidden md:block" />
+      <section id="war-road" className="py-20 relative bg-card/20 overflow-hidden">
+        <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" />
         <div className="container relative">
           <SectionTitle kicker="Хронология 1941" title="Дорога войны" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Ключевые операции первого года — от первого удара до контрнаступления под Москвой. Нажми на событие.</p>
+          <p className="text-muted-foreground mt-3 max-w-lg text-sm">От первого удара до контрнаступления под Москвой. Нажми на событие — откроются детали.</p>
 
-          <div className="mt-14 space-y-0 max-w-5xl mx-auto">
+          <div className="mt-10 space-y-2 max-w-4xl">
             {WAR_ROAD.map((ev, i) => {
-              const isLeft = i % 2 === 0;
+              const isOpen = activeRoadIdx === i;
               const typeColor: Record<string, string> = {
-                attack: 'text-accent border-accent/40 bg-accent/10',
-                loss: 'text-accent border-accent/40 bg-accent/10',
-                battle: 'text-foreground border-border bg-muted',
-                siege: 'text-foreground border-border bg-muted',
-                victory: 'text-primary border-primary/40 bg-primary/10',
+                attack: 'border-accent text-accent bg-accent/10',
+                loss: 'border-accent/60 text-accent/80 bg-accent/5',
+                battle: 'border-border text-muted-foreground bg-muted/50',
+                siege: 'border-border text-muted-foreground bg-muted/50',
+                victory: 'border-primary text-primary bg-primary/10',
+              };
+              const dotColor: Record<string, string> = {
+                attack: 'bg-accent border-accent',
+                loss: 'bg-accent/60 border-accent/60',
+                battle: 'bg-muted-foreground/40 border-border',
+                siege: 'bg-muted-foreground/30 border-border',
+                victory: 'bg-primary border-primary',
               };
               const typeLabel: Record<string, string> = {
-                attack: 'Нападение', loss: 'Поражение', battle: 'Сражение', siege: 'Осада', victory: 'Победа',
+                attack: 'Нападение', loss: 'Поражение', battle: 'Сражение', siege: 'Осада', victory: '★ Победа',
               };
               return (
-                <div key={i} className={`flex gap-0 md:gap-8 items-start ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} flex-row`}>
+                <div key={i} className="relative pl-16">
+                  {/* Линия соединения */}
+                  {i < WAR_ROAD.length - 1 && (
+                    <div className="absolute left-[29px] top-9 bottom-[-8px] w-px bg-border/60" />
+                  )}
+                  {/* Точка */}
+                  <div className={`absolute left-6 top-4 w-4 h-4 rounded-full border-2 transition-all duration-300 ${isOpen ? 'scale-125 ' : ''} ${dotColor[ev.type]}`} />
+
                   {/* Карточка */}
-                  <div className={`flex-1 pb-8 ${isLeft ? 'md:text-right' : 'md:text-left'} text-left`}>
-                    <div className={`border border-border bg-card hover:border-primary/40 p-5 transition-all duration-300 group ${isLeft ? '' : ''}`}>
-                      <div className={`flex items-center gap-2 mb-3 ${isLeft ? 'md:justify-end' : ''}`}>
-                        <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 border font-medium ${typeColor[ev.type]}`}>
-                          {typeLabel[ev.type]}
-                        </span>
-                      </div>
-                      <p className="font-display text-xs tracking-[0.3em] text-primary mb-1">{ev.date}</p>
-                      <h3 className="font-display font-700 text-xl tracking-wide mb-2">{ev.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{ev.desc}</p>
-                      <div className="mt-3 pt-3 border-t border-border/50 flex items-center gap-2">
-                        <Icon name="Shield" size={11} className="text-muted-foreground shrink-0" />
-                        <span className="text-xs text-muted-foreground">{ev.force}</span>
+                  <button
+                    onClick={() => setActiveRoadIdx(isOpen ? null : i)}
+                    className={`w-full text-left border transition-all duration-300 ${isOpen ? 'border-primary bg-card' : 'border-border bg-card/50 hover:border-primary/40 hover:bg-card'}`}
+                  >
+                    {/* Заголовок — всегда виден */}
+                    <div className="flex items-center gap-4 p-4">
+                      <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 border font-display shrink-0 ${typeColor[ev.type]}`}>
+                        {typeLabel[ev.type]}
+                      </span>
+                      <span className="font-display text-xs text-primary tracking-widest shrink-0">{ev.date}</span>
+                      <h3 className={`font-display font-600 text-base tracking-wide flex-1 transition-colors ${isOpen ? 'text-primary' : 'text-foreground'}`}>{ev.title}</h3>
+                      <Icon name={isOpen ? 'ChevronUp' : 'ChevronDown'} size={16} className={`shrink-0 transition-colors ${isOpen ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </div>
+
+                    {/* Раскрывающийся контент */}
+                    <div className={`overflow-hidden transition-all duration-400 ${isOpen ? 'max-h-48' : 'max-h-0'}`}>
+                      <div className="px-4 pb-4 border-t border-border/50 pt-3 grid md:grid-cols-[1fr_auto] gap-4 items-start">
+                        <p className="text-sm text-muted-foreground leading-relaxed">{ev.desc}</p>
+                        <div className="border border-border px-4 py-2 text-center shrink-0 min-w-[140px]">
+                          <div className="font-display text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Силы</div>
+                          <div className="font-display text-sm text-foreground/90">{ev.force}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Точка на линии */}
-                  <div className="hidden md:flex flex-col items-center shrink-0">
-                    <div className={`w-4 h-4 rounded-full border-2 mt-5 ${ev.type === 'victory' ? 'border-primary bg-primary' : ev.type === 'attack' || ev.type === 'loss' ? 'border-accent bg-accent/20' : 'border-border bg-muted'}`} />
-                  </div>
-
-                  {/* Пустая сторона */}
-                  <div className="flex-1 hidden md:block" />
+                  </button>
                 </div>
               );
             })}
@@ -1252,117 +1365,153 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ═══ ТРИ ГРУППИРОВКИ ВТОРЖЕНИЯ ═══ */}
+      {/* ═══ ТРИ УДАРА ВЕРМАХТА ═══ */}
       <section id="groups" className="py-28 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, hsl(var(--primary)) 0 1px, transparent 1px 80px)' }} />
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, hsl(var(--primary)) 0 1px, transparent 1px 80px)' }} />
         <div className="container relative">
-          <SectionTitle kicker="22 июня 1941" title="Три удара Вермахта" />
-          <p className="text-muted-foreground mt-4 max-w-lg">Три группы армий — три направления удара. Нажми на группировку, переключай вкладки «Вермахт / СССР».</p>
+          <SectionTitle kicker="22 июня 1941 · Мы выстояли" title="Три удара Вермахта" />
+          <p className="text-muted-foreground mt-3 max-w-xl text-sm">Выбери направление удара — сначала посмотри, что противопоставил советский народ, потом — силы противника.</p>
 
-          {/* Табы групп */}
-          <div className="mt-14 grid grid-cols-3 gap-px border border-border bg-border">
+          {/* Табы направлений */}
+          <div className="mt-10 grid grid-cols-3 gap-px bg-border border border-border">
             {INVASION_GROUPS.map((g) => (
-              <button
-                key={g.id}
-                onClick={() => { setActiveGroup(g.id); setActiveGroupTab('german'); }}
-                className={`bg-background hover:bg-card py-5 px-4 text-left transition-all duration-300 border-b-2 ${activeGroup === g.id ? `${g.color} bg-card` : 'border-transparent'}`}
+              <button key={g.id}
+                onClick={() => { setActiveGroup(g.id); setActiveGroupTab('soviet'); }}
+                className={`bg-background hover:bg-card py-4 px-4 text-left transition-all duration-300 relative ${activeGroup === g.id ? 'bg-card' : ''}`}
               >
-                <p className={`font-display text-xs tracking-widest uppercase mb-1 ${activeGroup === g.id ? g.accentColor : 'text-muted-foreground'}`}>
-                  {g.id === 'north' ? '◂ Север' : g.id === 'center' ? '▸ Центр' : 'Юг ▸'}
+                {activeGroup === g.id && <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary`} />}
+                <p className={`font-display text-[10px] tracking-[0.35em] uppercase mb-1 transition-colors ${activeGroup === g.id ? 'text-primary' : 'text-muted-foreground'}`}>
+                  {g.id === 'north' ? '↑ Север' : g.id === 'center' ? '→ Центр' : '↓ Юг'}
                 </p>
-                <p className="font-display font-700 text-base md:text-lg tracking-wide leading-tight">{g.name}</p>
+                <p className={`font-display font-700 text-sm md:text-base tracking-wide leading-tight transition-colors ${activeGroup === g.id ? 'text-foreground' : 'text-muted-foreground/80'}`}>{g.name}</p>
               </button>
             ))}
           </div>
 
           {INVASION_GROUPS.filter(g => g.id === activeGroup).map((g) => (
-            <div key={g.id} className="border border-border border-t-0 bg-card">
-              {/* Вкладки Вермахт / СССР */}
-              <div className="flex border-b border-border">
-                <button
-                  onClick={() => setActiveGroupTab('german')}
-                  className={`flex-1 py-3 font-display text-sm tracking-wider transition-all ${activeGroupTab === 'german' ? 'text-accent bg-accent/5 border-b-2 border-accent' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                  Вермахт
+            <div key={g.id} className="border border-t-0 border-border">
+              {/* Вкладки — СССР ПЕРВЫЙ */}
+              <div className="grid grid-cols-2">
+                <button onClick={() => setActiveGroupTab('soviet')}
+                  className={`py-3 font-display text-sm tracking-wider transition-all border-b-2 flex items-center justify-center gap-2 ${activeGroupTab === 'soviet' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-border hover:text-foreground'}`}>
+                  <Icon name="Shield" size={14} /> Красная Армия
                 </button>
-                <button
-                  onClick={() => setActiveGroupTab('soviet')}
-                  className={`flex-1 py-3 font-display text-sm tracking-wider transition-all ${activeGroupTab === 'soviet' ? 'text-primary bg-primary/5 border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                  Красная Армия
+                <button onClick={() => setActiveGroupTab('german')}
+                  className={`py-3 font-display text-sm tracking-wider transition-all border-b-2 flex items-center justify-center gap-2 ${activeGroupTab === 'german' ? 'text-accent border-accent bg-accent/5' : 'text-muted-foreground border-border hover:text-foreground'}`}>
+                  <Icon name="Swords" size={14} /> Вермахт
                 </button>
               </div>
 
-              {activeGroupTab === 'german' ? (
-                <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Командующий</p>
-                      <p className="font-display font-700 text-xl">{g.german.commander}</p>
+              {/* ПАНЕЛЬ СССР */}
+              {activeGroupTab === 'soviet' && (
+                <div className="p-6 md:p-8 animate-fade-up" style={{opacity:0,animationFillMode:'forwards'}}>
+                  {/* Командиры с иконками */}
+                  <div className="flex items-start gap-5 mb-6 p-4 border border-primary/20 bg-primary/5">
+                    <div className="w-14 h-14 border-2 border-primary/40 bg-primary/10 flex items-center justify-center shrink-0">
+                      <Icon name="Star" size={24} className="text-primary" />
                     </div>
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Состав</p>
-                      <p className="text-sm text-foreground/90">{g.german.armies}</p>
-                    </div>
-                    <div className="grid grid-cols-3 gap-3 pt-2">
-                      {[['Солдат', g.german.men], ['Танков', g.german.tanks], ['Самолётов', g.german.aircraft]].map(([label, val]) => (
-                        <div key={label} className="border border-border p-3 text-center">
-                          <div className="font-display font-700 text-xl text-accent">{val}</div>
-                          <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
-                        </div>
-                      ))}
+                      <p className="text-[10px] uppercase tracking-[0.35em] text-primary mb-1">Командующие · СССР</p>
+                      <p className="font-display font-700 text-xl">{g.soviet.commander}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{g.soviet.fronts}</p>
                     </div>
                   </div>
-                  <div className="space-y-4">
+
+                  <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Цель</p>
-                      <p className="text-sm text-foreground/90 leading-relaxed">{g.german.goal}</p>
+                      {/* Техника */}
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Силы и техника</p>
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        {[
+                          { icon: 'Users', label: 'Солдат', val: g.soviet.men, c: 'text-primary' },
+                          { icon: 'Crosshair', label: 'Танков', val: g.soviet.tanks, c: 'text-primary' },
+                        ].map((item) => (
+                          <div key={item.label} className="border border-primary/20 bg-primary/5 p-3 text-center hover:border-primary/50 transition-colors">
+                            <Icon name={item.icon} size={16} className={`${item.c} mx-auto mb-1.5`} />
+                            <div className={`font-display font-700 text-xl ${item.c}`}>{item.val}</div>
+                            <div className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-wider">{item.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Итог обороны</p>
+                        <p className="text-sm text-foreground/90 leading-relaxed">{g.soviet.result}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Потери</p>
+                        <p className="text-sm text-muted-foreground">{g.soviet.losses}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Итоговый баннер ПОБЕДЫ */}
+                  <div className="mt-5 border border-primary bg-primary/10 px-5 py-4 flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary flex items-center justify-center shrink-0">
+                      <Icon name="Star" size={16} className="text-primary-foreground" />
                     </div>
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Ключевые операции</p>
+                      <p className="font-display font-700 text-primary tracking-wide">✓ {g.outcome}</p>
+                      <p className="text-xs text-primary/70 mt-0.5">Советский народ выстоял</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ПАНЕЛЬ ВЕРМАХТ */}
+              {activeGroupTab === 'german' && (
+                <div className="p-6 md:p-8 animate-fade-up" style={{opacity:0,animationFillMode:'forwards'}}>
+                  {/* Командир */}
+                  <div className="flex items-start gap-5 mb-6 p-4 border border-accent/20 bg-accent/5">
+                    <div className="w-14 h-14 border-2 border-accent/30 bg-accent/10 flex items-center justify-center shrink-0">
+                      <Icon name="Crosshair" size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.35em] text-accent mb-1">Командующий · Вермахт</p>
+                      <p className="font-display font-700 text-xl">{g.german.commander}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{g.german.armies}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Техника и силы</p>
+                      <div className="grid grid-cols-3 gap-2 mb-4">
+                        {[
+                          { icon: 'Users', label: 'Солдат', val: g.german.men },
+                          { icon: 'Crosshair', label: 'Танков', val: g.german.tanks },
+                          { icon: 'Wind', label: 'Самолётов', val: g.german.aircraft },
+                        ].map((item) => (
+                          <div key={item.label} className="border border-accent/20 bg-accent/5 p-2 text-center">
+                            <Icon name={item.icon} size={13} className="text-accent mx-auto mb-1" />
+                            <div className="font-display font-700 text-base text-accent">{item.val}</div>
+                            <div className="text-[10px] text-muted-foreground mt-0.5">{item.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Цель</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{g.german.goal}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Операции</p>
                       <div className="space-y-2">
                         {g.german.operations.map((op, oi) => (
-                          <div key={oi} className="flex items-start gap-2">
-                            <span className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 shrink-0" />
-                            <span className="text-sm text-muted-foreground">{op}</span>
+                          <div key={oi} className="flex items-start gap-2 p-2 border border-border hover:border-accent/30 transition-colors">
+                            <span className="font-display text-[10px] text-accent/60 mt-0.5 shrink-0">{String(oi+1).padStart(2,'0')}</span>
+                            <span className="text-xs text-muted-foreground">{op}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Командующие</p>
-                      <p className="font-display font-700 text-xl">{g.soviet.commander}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Фронты</p>
-                      <p className="text-sm text-foreground/90">{g.soviet.fronts}</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 pt-2">
-                      {[['Солдат', g.soviet.men], ['Танков', g.soviet.tanks]].map(([label, val]) => (
-                        <div key={label} className="border border-border p-3 text-center">
-                          <div className="font-display font-700 text-xl text-primary">{val}</div>
-                          <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Итог</p>
-                      <p className="text-sm text-foreground/90 leading-relaxed">{g.soviet.result}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Потери</p>
-                      <p className="text-sm text-muted-foreground">{g.soviet.losses}</p>
-                    </div>
-                    <div className="border border-primary/30 bg-primary/5 px-4 py-3">
-                      <p className="font-display text-sm text-primary">{g.outcomeColor === 'text-primary' ? '✓ ' : ''}{g.outcome}</p>
-                    </div>
+
+                  {/* Провал */}
+                  <div className="mt-5 border border-accent/30 bg-accent/5 px-5 py-3 flex items-center gap-3">
+                    <Icon name="X" size={16} className="text-accent shrink-0" />
+                    <p className="font-display text-sm text-accent/80">Цель не достигнута — {g.outcome}</p>
                   </div>
                 </div>
               )}
@@ -1372,35 +1521,64 @@ const Index = () => {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-border pt-12 pb-8">
+      <footer className="border-t border-border bg-card/30">
         <div className="container">
-          {/* Соцсети крупно */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px border border-border bg-border mb-10">
-            {SOCIALS.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-background hover:bg-card transition-colors p-5 flex items-center gap-3 group"
-              >
-                <span className="w-8 h-8 border border-border flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-colors text-muted-foreground">
-                  <Icon name={s.icon} size={16} />
-                </span>
-                <div>
-                  <p className="font-display text-sm tracking-wide group-hover:text-primary transition-colors">{s.name}</p>
-                  <p className="text-xs text-muted-foreground">Подписаться</p>
-                </div>
-                <Icon name="ArrowUpRight" size={14} className="ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
-              </a>
-            ))}
+
+          {/* Верхняя часть: Лого + Соцсети + Источники */}
+          <div className="py-12 grid md:grid-cols-[1fr_1fr_1fr] gap-10 border-b border-border">
+
+            {/* Лого и описание */}
+            <div>
+              <div className="font-display font-700 tracking-[0.35em] text-primary text-2xl mb-3">ПАМЯТЬ</div>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                Художественно-документальный сериал о подвиге советского народа в годы Великой Отечественной войны.
+              </p>
+              <div className="space-y-1">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Производство</p>
+                <p className="text-xs text-foreground/80">SHAG · Федеральный подростковый центр</p>
+                <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-widest">ИНН организации</p>
+                <p className="text-xs font-display text-foreground/80 tracking-wider">7 743 425 031</p>
+              </div>
+            </div>
+
+            {/* Соцсети */}
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-4">Смотреть и подписаться</p>
+              <div className="space-y-2">
+                {SOCIALS.map((s) => (
+                  <a key={s.name} href={s.url} target="_blank" rel="noreferrer"
+                    className="flex items-center gap-3 p-2.5 border border-border hover:border-primary hover:bg-primary/5 transition-all group">
+                    <span className="w-7 h-7 border border-border flex items-center justify-center text-muted-foreground group-hover:border-primary group-hover:text-primary transition-all shrink-0">
+                      <Icon name={s.icon} size={13} />
+                    </span>
+                    <span className="font-display text-sm tracking-wide group-hover:text-primary transition-colors">{s.name}</span>
+                    <Icon name="ArrowUpRight" size={12} className="ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Источники — флип-карточки слайдер */}
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-4">Источники и материалы</p>
+              <SourcesFlip />
+            </div>
           </div>
 
           {/* Нижняя строка */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-            <span className="font-display font-700 tracking-[0.3em] text-primary text-xl">ПАМЯТЬ</span>
-            <p className="text-xs text-muted-foreground text-center">Художественно-документальный сериал · 16+ · © 2024–2027 MEMORY PROJECT</p>
-            <p className="text-xs text-muted-foreground">Все права защищены</p>
+          <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-4">
+              <span className="font-display font-700 text-primary tracking-[0.25em]">ПАМЯТЬ</span>
+              <span className="text-muted-foreground/30">·</span>
+              <span className="text-xs text-muted-foreground">16+</span>
+              <span className="text-muted-foreground/30">·</span>
+              <span className="text-xs text-muted-foreground">© 2024–2027</span>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">Все права на контент защищены. Использование материалов с указанием источника.</p>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Icon name="Shield" size={11} className="text-primary/60" />
+              <span>Все права защищены</span>
+            </div>
           </div>
         </div>
       </footer>
@@ -1413,6 +1591,74 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
     <div className="animate-fade-up" style={{ opacity: 0 }}>
       <p className="font-display tracking-[0.4em] text-accent text-xs uppercase mb-3">{kicker}</p>
       <h2 className="font-display font-700 text-5xl md:text-6xl tracking-wide">{title}</h2>
+    </div>
+  );
+}
+
+const SOURCES = [
+  { type: 'Фото', title: 'Государственный архив кинофотодокументов', desc: 'ГАКФД России — официальный архив военной хроники и фотоматериалов 1941–1945 гг.' },
+  { type: 'Фото', title: 'Российский государственный архив', desc: 'РГАКФД — фотодокументы Великой Отечественной войны из официальных фондов.' },
+  { type: 'Данные', title: 'Министерство обороны РФ · ОБД «Мемориал»', desc: 'Официальная база данных по потерям и участникам ВОВ.' },
+  { type: 'Видео', title: 'Центральная студия документальных фильмов', desc: 'Хроника Великой Отечественной войны, киноматериалы 1941–1945 гг.' },
+  { type: 'Текст', title: 'История Второй мировой войны · Воениздат', desc: 'Официальное 12-томное издание. Главная редакционная комиссия МО СССР.' },
+  { type: 'Портреты', title: 'Энциклопедия «Великая Отечественная»', desc: 'Биографические материалы героев и командиров из открытых официальных источников.' },
+];
+
+function SourcesFlip() {
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const src = SOURCES[idx];
+  return (
+    <div className="space-y-3">
+      {/* Флип-карточка */}
+      <div
+        className="relative cursor-pointer select-none"
+        style={{ perspective: '800px' }}
+        onClick={() => setFlipped(f => !f)}
+      >
+        <div
+          className="relative border border-border transition-transform duration-500"
+          style={{ transformStyle: 'preserve-3d', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)', minHeight: '110px' }}
+        >
+          {/* Лицо */}
+          <div className="p-4 absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-display text-[10px] tracking-widest text-primary uppercase border border-primary/30 px-2 py-0.5">{src.type}</span>
+              <Icon name="RotateCcw" size={12} className="text-muted-foreground/50" />
+            </div>
+            <p className="font-display text-sm font-600 tracking-wide leading-tight text-foreground">{src.title}</p>
+            <p className="text-[10px] text-muted-foreground/50 mt-2 uppercase tracking-widest">Нажми — узнай подробнее</p>
+          </div>
+          {/* Обратная сторона */}
+          <div className="p-4 absolute inset-0 bg-card/80" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-display text-[10px] tracking-widest text-accent uppercase">Описание</span>
+              <Icon name="RotateCcw" size={12} className="text-muted-foreground/50" />
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">{src.desc}</p>
+          </div>
+        </div>
+      </div>
+      {/* Навигация */}
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] text-muted-foreground uppercase tracking-widest">{idx+1} / {SOURCES.length}</span>
+        <div className="flex gap-1.5">
+          {SOURCES.map((_, i) => (
+            <button key={i} onClick={() => { setIdx(i); setFlipped(false); }}
+              className={`w-5 h-0.5 transition-all ${idx === i ? 'bg-primary' : 'bg-border hover:bg-muted-foreground/50'}`} />
+          ))}
+        </div>
+        <div className="flex gap-1">
+          <button onClick={() => { setIdx(p => Math.max(0, p-1)); setFlipped(false); }} disabled={idx === 0}
+            className="border border-border p-1 hover:border-primary hover:text-primary transition-colors disabled:opacity-25">
+            <Icon name="ChevronLeft" size={12} />
+          </button>
+          <button onClick={() => { setIdx(p => Math.min(SOURCES.length-1, p+1)); setFlipped(false); }} disabled={idx === SOURCES.length-1}
+            className="border border-border p-1 hover:border-primary hover:text-primary transition-colors disabled:opacity-25">
+            <Icon name="ChevronRight" size={12} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
