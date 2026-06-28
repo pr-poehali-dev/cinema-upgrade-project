@@ -16,6 +16,10 @@ const NAV = [
   { id: 'episodes', label: 'Эпизоды' },
   { id: 'seasons', label: 'Сезоны' },
   { id: 'heroes', label: 'Герои' },
+  { id: 'hero-cities', label: 'Города-герои' },
+  { id: 'digits', label: 'Цифры подвига' },
+  { id: 'war-road', label: 'Дорога войны' },
+  { id: 'groups', label: 'Группировки' },
   { id: 'chronicles', label: 'Хроника' },
   { id: 'diary', label: 'Дневник' },
   { id: 'poster', label: 'Афиша' },
@@ -178,6 +182,203 @@ const MOMENTS = [
   { id: 4, text: 'Молчаливый диалог', votes: 631 },
 ];
 
+const HERO_CITIES = [
+  {
+    name: 'Ленинград',
+    years: '1941–1944',
+    days: 872,
+    img: 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/39835338-a384-4110-a670-10ef8b4a1665.jpg',
+    desc: 'Самая долгая блокада в истории мировых войн. Город не сдался, несмотря на 872 дня окружения и гибель более 800 000 мирных жителей.',
+    medal: '1965',
+    key: ['872 дня блокады', '800 000+ жертв среди мирных', 'Дорога жизни через Ладогу', 'Не сдался врагу'],
+  },
+  {
+    name: 'Сталинград',
+    years: '1942–1943',
+    days: 200,
+    img: 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/1469654f-3c75-47fe-a6c1-39687731c2af.jpg',
+    desc: 'Поворот войны. Сражение за каждый дом, каждый этаж. Здесь 6-я армия Паулюса была окружена и капитулировала. Перелом Второй мировой.',
+    medal: '1965',
+    key: ['200 дней боёв', '330 000 окружённых немцев', 'Паулюс сдался в плен', 'Начало коренного перелома'],
+  },
+  {
+    name: 'Киев',
+    years: '1941',
+    days: 72,
+    img: 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/1e2a2109-6e55-419b-980e-2b8c9e08b212.jpg',
+    desc: '72 дня обороны столицы Украины. Первый город, которому 21 июня 1961 года было присвоено звание Города-героя. Символ стойкости советского народа.',
+    medal: '1961',
+    key: ['72 дня обороны', 'Первый город-герой СССР', 'Народное ополчение', 'Разрушено 940 заводов'],
+  },
+  {
+    name: 'Брест',
+    years: '1941',
+    days: 32,
+    img: 'https://cdn.poehali.dev/projects/50f7f876-2da8-4bd3-8acd-b8ebc7d60d01/files/1e168325-99a0-43d9-b116-d2a2f23a7409.jpg',
+    desc: 'Гарнизон крепости принял бой в первые часы войны и держался 32 дня без связи, подкреплений и надежды. «Умираю, но не сдаюсь» — надпись на стене казармы.',
+    medal: '1965',
+    key: ['32 дня без связи с тылом', '«Умираю, но не сдаюсь»', 'Бой начался 22 июня в 4:15', 'Крепость-символ стойкости'],
+  },
+  {
+    name: 'Москва',
+    years: '1941–1942',
+    days: 203,
+    img: HERO_IMG,
+    desc: 'Немцы видели башни Кремля в бинокль. Операция «Тайфун» захлебнулась. Контрнаступление под Москвой стало первой крупной победой СССР в войне.',
+    medal: '1965',
+    key: ['203 дня битвы', 'Операция «Тайфун» провалилась', 'Первое контрнаступление', '36 дивизий ополчения'],
+  },
+  {
+    name: 'Одесса',
+    years: '1941',
+    days: 73,
+    img: STILL_IMG,
+    desc: '73 дня оборонялась изолированная Одесса без сухопутной связи с большой землёй. Эвакуирована организованно — враг вошёл в пустой город.',
+    medal: '1965',
+    key: ['73 дня без связи с фронтом', 'Эвакуация флотом', '160 000 защитников', 'Подземные катакомбы'],
+  },
+];
+
+const DIGITS_1941 = [
+  { value: '4 700 000', label: 'Солдат выставил СССР к 22 июня', icon: 'Users', color: 'text-foreground' },
+  { value: '3 562 000', label: 'Попало в плен за первые 6 месяцев', icon: 'AlertTriangle', color: 'text-accent' },
+  { value: '1 200', label: 'Самолётов потеряно в первый день', icon: 'Plane', color: 'text-accent' },
+  { value: '22 июня', label: 'Нападение без объявления войны', icon: 'Calendar', color: 'text-primary' },
+  { value: '190', label: 'Дивизий Вермахта на восточном фронте', icon: 'Shield', color: 'text-foreground' },
+  { value: '5 млн', label: 'Мирных жителей погибло в 1941 году', icon: 'Heart', color: 'text-accent' },
+  { value: '3 млн км²', label: 'Оккупировано к декабрю 1941', icon: 'Map', color: 'text-accent' },
+  { value: '5 декабря', label: 'Начало контрнаступления под Москвой', icon: 'Star', color: 'text-primary' },
+];
+
+const WAR_ROAD = [
+  {
+    date: '22 июня 1941',
+    time: '04:00',
+    title: 'Нападение без объявления войны',
+    desc: 'Три группы армий пересекли границу СССР. Бомбардировке подверглись Киев, Минск, Рига, Одесса. Гарнизон Бреста принял бой.',
+    type: 'attack',
+    force: '3,8 млн солдат Вермахта',
+  },
+  {
+    date: '28 июня 1941',
+    time: '',
+    title: 'Падение Минска',
+    desc: 'Группа армий «Центр» окружила и взяла столицу Белоруссии. В котёл попало до 400 000 советских солдат. Катастрофа Западного фронта.',
+    type: 'loss',
+    force: '400 000 в окружении',
+  },
+  {
+    date: '10 июля 1941',
+    time: '',
+    title: 'Начало битвы за Смоленск',
+    desc: 'Двухмесячное сражение задержало немецкое наступление на Москву. Первые советские контрудары. Здесь родилась советская гвардия.',
+    type: 'battle',
+    force: 'Смоленский котёл — 310 000',
+  },
+  {
+    date: '8 сентября 1941',
+    time: '',
+    title: 'Начало блокады Ленинграда',
+    desc: 'Кольцо окружения замкнулось. Город отрезан от страны. Началась 872-дневная осада, унёсшая сотни тысяч жизней.',
+    type: 'siege',
+    force: 'Группа армий «Север»',
+  },
+  {
+    date: '30 сентября 1941',
+    time: '',
+    title: 'Операция «Тайфун» — удар на Москву',
+    desc: 'Немцы бросили 1,9 млн солдат в финальное наступление на столицу. Вяземский и Брянский котлы — ещё 700 000 в плену.',
+    type: 'attack',
+    force: '1,9 млн + 1700 танков',
+  },
+  {
+    date: '5 декабря 1941',
+    time: '',
+    title: 'Контрнаступление под Москвой',
+    desc: 'Красная Армия перешла в наступление. Враг отброшен на 100–250 км. Первая крупная победа СССР. Миф о непобедимости Вермахта развеян.',
+    type: 'victory',
+    force: 'Отброшены на 250 км',
+  },
+];
+
+const INVASION_GROUPS = [
+  {
+    id: 'north',
+    name: 'Группа армий «Север»',
+    german: {
+      commander: 'Вильгельм фон Лееб',
+      armies: '18-я и 16-я армии + 4-я танковая группа',
+      men: '760 000',
+      tanks: '679',
+      aircraft: '1 070',
+      goal: 'Уничтожение советских сил в Прибалтике, захват Ленинграда',
+      operations: ['Захват Прибалтики (июнь–июль)', 'Окружение Ленинграда (сентябрь)', 'Блокада 872 дня'],
+    },
+    soviet: {
+      commander: 'Фёдор Кузнецов / Клемент Ворошилов',
+      fronts: 'Северо-Западный и Северный фронты',
+      men: '500 000',
+      tanks: '1 500',
+      result: 'Ленинград выстоял. Блокада прорвана в 1944 году.',
+      losses: 'Огромные потери, но город не сдан',
+    },
+    color: 'border-blue-500/40',
+    accentColor: 'text-blue-400',
+    outcome: 'Цель не достигнута',
+    outcomeColor: 'text-primary',
+  },
+  {
+    id: 'center',
+    name: 'Группа армий «Центр»',
+    german: {
+      commander: 'Фёдор фон Бок',
+      armies: '4-я и 9-я армии + 2-я и 3-я танковые группы',
+      men: '1 180 000',
+      tanks: '1 677',
+      aircraft: '1 677',
+      goal: 'Разгром советских сил в Белоруссии, захват Москвы',
+      operations: ['Минский котёл — 400 000 пленных', 'Смоленское сражение', 'Операция «Тайфун»'],
+    },
+    soviet: {
+      commander: 'Дмитрий Павлов / Георгий Жуков',
+      fronts: 'Западный, Резервный, Брянский фронты',
+      men: '800 000',
+      tanks: '2 900',
+      result: 'Москва не взята. 5 декабря — контрнаступление.',
+      losses: 'Катастрофические потери, но столица отстояна',
+    },
+    color: 'border-accent/40',
+    accentColor: 'text-accent',
+    outcome: 'Москва не сдана',
+    outcomeColor: 'text-primary',
+  },
+  {
+    id: 'south',
+    name: 'Группа армий «Юг»',
+    german: {
+      commander: 'Герд фон Рундштедт',
+      armies: '6-я, 11-я, 17-я армии + 1-я танковая группа',
+      men: '1 000 000',
+      tanks: '728',
+      aircraft: '1 300',
+      goal: 'Захват Украины, Донбасса, выход к Кавказу',
+      operations: ['Оборона Киева 72 дня', 'Киевский котёл — 650 000 пленных', 'Захват Харькова (октябрь)'],
+    },
+    soviet: {
+      commander: 'Михаил Кирпонос / Семён Тимошенко',
+      fronts: 'Юго-Западный и Южный фронты',
+      men: '1 400 000',
+      tanks: '4 800',
+      result: 'Крупнейшее окружение в истории. Киев пал, но темп наступления сорван.',
+      losses: 'Тяжелейшие — Киевский котёл',
+    },
+    color: 'border-primary/40',
+    accentColor: 'text-primary',
+    outcome: 'Кавказ не захвачен в 1941',
+    outcomeColor: 'text-primary',
+  },
+];
+
 
 
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
@@ -218,6 +419,9 @@ const Index = () => {
   const [activeClip, setActiveClip] = useState(0);
   const [activeHero, setActiveHero] = useState<number | null>(null);
   const [activeDiary, setActiveDiary] = useState(0);
+  const [activeCity, setActiveCity] = useState(0);
+  const [activeGroup, setActiveGroup] = useState('center');
+  const [activeGroupTab, setActiveGroupTab] = useState<'german'|'soviet'>('german');
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -872,6 +1076,298 @@ const Index = () => {
               </Button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ═══ ГОРОДА-ГЕРОИ ═══ */}
+      <section id="hero-cities" className="py-28 relative overflow-hidden bg-card/20">
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        <div className="container relative">
+          <SectionTitle kicker="Слава навечно" title="Города-герои" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Каждый город — отдельный подвиг. Листай слайды, нажимай на город — открывается полная история.</p>
+
+          {/* Слайдер */}
+          <div className="mt-14 relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${activeCity * 100}%)` }}
+              >
+                {HERO_CITIES.map((city, i) => (
+                  <div key={city.name} className="min-w-full">
+                    <div className="grid lg:grid-cols-[1fr_420px] gap-0 border border-border overflow-hidden">
+                      {/* Фото */}
+                      <div className="relative h-72 lg:h-auto overflow-hidden">
+                        <img src={city.img} alt={city.name} className="w-full h-full object-cover" style={{ filter: 'contrast(1.1) saturate(0.3) brightness(0.75)' }} />
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/90 hidden lg:block" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-card/95 to-transparent lg:hidden" />
+                        <div className="absolute bottom-6 left-6">
+                          <p className="font-display text-xs tracking-[0.35em] text-accent uppercase mb-1">{city.years}</p>
+                          <h2 className="font-display font-700 text-5xl text-foreground">{city.name}</h2>
+                          <p className="text-muted-foreground text-sm mt-1">Медаль «Город-герой» — {city.medal}</p>
+                        </div>
+                        <div className="absolute top-5 right-5 border border-primary/40 bg-background/60 px-3 py-1.5 backdrop-blur-sm">
+                          <span className="font-display text-xs text-primary tracking-widest">{city.days} ДНЕЙ</span>
+                        </div>
+                      </div>
+                      {/* Контент */}
+                      <div className="bg-card p-8 flex flex-col justify-between">
+                        <div>
+                          <p className="font-display text-xs tracking-[0.3em] text-muted-foreground uppercase mb-4">Историческая справка</p>
+                          <p className="text-foreground/90 leading-relaxed mb-8">{city.desc}</p>
+                          <div className="space-y-2">
+                            {city.key.map((k, ki) => (
+                              <div key={ki} className="flex items-center gap-3">
+                                <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
+                                <span className="text-sm text-muted-foreground">{k}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-between pt-6 border-t border-border">
+                          <span className="font-display text-xs text-muted-foreground tracking-widest uppercase">{i + 1} / {HERO_CITIES.length}</span>
+                          <div className="flex gap-2">
+                            <button onClick={() => setActiveCity(p => Math.max(0, p - 1))} disabled={activeCity === 0}
+                              className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30">
+                              <Icon name="ChevronLeft" size={16} />
+                            </button>
+                            <button onClick={() => setActiveCity(p => Math.min(HERO_CITIES.length - 1, p + 1))} disabled={activeCity === HERO_CITIES.length - 1}
+                              className="border border-border p-2 hover:border-primary hover:text-primary transition-colors disabled:opacity-30">
+                              <Icon name="ChevronRight" size={16} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Точки навигации */}
+            <div className="flex gap-2 justify-center mt-6">
+              {HERO_CITIES.map((c, i) => (
+                <button key={i} onClick={() => setActiveCity(i)}
+                  className={`font-display text-xs tracking-wider px-3 py-1.5 border transition-all ${activeCity === i ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:border-primary/50'}`}>
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ЦИФРЫ ПОДВИГА 1941 ═══ */}
+      <section id="digits" className="py-28 relative">
+        <div className="container">
+          <SectionTitle kicker="1941 год" title="Цифры подвига" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Сухие числа — за каждым стоят миллионы судеб. Самый тяжёлый год войны в фактах.</p>
+
+          <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-px border border-border bg-border">
+            {DIGITS_1941.map((d, i) => (
+              <div
+                key={i}
+                className="bg-background hover:bg-card transition-all duration-300 p-6 group cursor-default"
+              >
+                <div className="mb-4">
+                  <span className="w-8 h-8 border border-border flex items-center justify-center text-muted-foreground group-hover:border-primary group-hover:text-primary transition-colors">
+                    <Icon name={d.icon} size={15} />
+                  </span>
+                </div>
+                <div className={`font-display font-700 text-3xl md:text-4xl tracking-tight mb-3 ${d.color} group-hover:text-primary transition-colors`}>{d.value}</div>
+                <div className="w-6 h-px bg-border group-hover:w-10 group-hover:bg-primary transition-all duration-300 mb-3" />
+                <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-wide">{d.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Большой акцент */}
+          <div className="mt-4 border border-primary/20 bg-primary/5 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-6">
+              <div className="font-display font-700 text-7xl text-primary/20 leading-none select-none">1941</div>
+              <div>
+                <p className="font-display font-700 text-2xl tracking-wide">Самый тяжёлый год</p>
+                <p className="text-muted-foreground text-sm mt-1 max-w-sm">СССР потерял треть своей территории, но не сломился. Контрнаступление под Москвой показало — Вермахт остановим.</p>
+              </div>
+            </div>
+            <div className="shrink-0 border border-primary/40 px-6 py-4 text-center">
+              <div className="font-display font-700 text-4xl text-primary">5 дек.</div>
+              <div className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">Начало перелома</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ДОРОГА ВОЙНЫ — ОПЕРАЦИИ 1941 ═══ */}
+      <section id="war-road" className="py-28 relative bg-card/20 overflow-hidden">
+        <div className="absolute left-1/2 top-20 bottom-20 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent pointer-events-none hidden md:block" />
+        <div className="container relative">
+          <SectionTitle kicker="Хронология 1941" title="Дорога войны" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Ключевые операции первого года — от первого удара до контрнаступления под Москвой. Нажми на событие.</p>
+
+          <div className="mt-14 space-y-0 max-w-5xl mx-auto">
+            {WAR_ROAD.map((ev, i) => {
+              const isLeft = i % 2 === 0;
+              const typeColor: Record<string, string> = {
+                attack: 'text-accent border-accent/40 bg-accent/10',
+                loss: 'text-accent border-accent/40 bg-accent/10',
+                battle: 'text-foreground border-border bg-muted',
+                siege: 'text-foreground border-border bg-muted',
+                victory: 'text-primary border-primary/40 bg-primary/10',
+              };
+              const typeLabel: Record<string, string> = {
+                attack: 'Нападение', loss: 'Поражение', battle: 'Сражение', siege: 'Осада', victory: 'Победа',
+              };
+              return (
+                <div key={i} className={`flex gap-0 md:gap-8 items-start ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} flex-row`}>
+                  {/* Карточка */}
+                  <div className={`flex-1 pb-8 ${isLeft ? 'md:text-right' : 'md:text-left'} text-left`}>
+                    <div className={`border border-border bg-card hover:border-primary/40 p-5 transition-all duration-300 group ${isLeft ? '' : ''}`}>
+                      <div className={`flex items-center gap-2 mb-3 ${isLeft ? 'md:justify-end' : ''}`}>
+                        <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 border font-medium ${typeColor[ev.type]}`}>
+                          {typeLabel[ev.type]}
+                        </span>
+                      </div>
+                      <p className="font-display text-xs tracking-[0.3em] text-primary mb-1">{ev.date}</p>
+                      <h3 className="font-display font-700 text-xl tracking-wide mb-2">{ev.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{ev.desc}</p>
+                      <div className="mt-3 pt-3 border-t border-border/50 flex items-center gap-2">
+                        <Icon name="Shield" size={11} className="text-muted-foreground shrink-0" />
+                        <span className="text-xs text-muted-foreground">{ev.force}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Точка на линии */}
+                  <div className="hidden md:flex flex-col items-center shrink-0">
+                    <div className={`w-4 h-4 rounded-full border-2 mt-5 ${ev.type === 'victory' ? 'border-primary bg-primary' : ev.type === 'attack' || ev.type === 'loss' ? 'border-accent bg-accent/20' : 'border-border bg-muted'}`} />
+                  </div>
+
+                  {/* Пустая сторона */}
+                  <div className="flex-1 hidden md:block" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ТРИ ГРУППИРОВКИ ВТОРЖЕНИЯ ═══ */}
+      <section id="groups" className="py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, hsl(var(--primary)) 0 1px, transparent 1px 80px)' }} />
+        <div className="container relative">
+          <SectionTitle kicker="22 июня 1941" title="Три удара Вермахта" />
+          <p className="text-muted-foreground mt-4 max-w-lg">Три группы армий — три направления удара. Нажми на группировку, переключай вкладки «Вермахт / СССР».</p>
+
+          {/* Табы групп */}
+          <div className="mt-14 grid grid-cols-3 gap-px border border-border bg-border">
+            {INVASION_GROUPS.map((g) => (
+              <button
+                key={g.id}
+                onClick={() => { setActiveGroup(g.id); setActiveGroupTab('german'); }}
+                className={`bg-background hover:bg-card py-5 px-4 text-left transition-all duration-300 border-b-2 ${activeGroup === g.id ? `${g.color} bg-card` : 'border-transparent'}`}
+              >
+                <p className={`font-display text-xs tracking-widest uppercase mb-1 ${activeGroup === g.id ? g.accentColor : 'text-muted-foreground'}`}>
+                  {g.id === 'north' ? '◂ Север' : g.id === 'center' ? '▸ Центр' : 'Юг ▸'}
+                </p>
+                <p className="font-display font-700 text-base md:text-lg tracking-wide leading-tight">{g.name}</p>
+              </button>
+            ))}
+          </div>
+
+          {INVASION_GROUPS.filter(g => g.id === activeGroup).map((g) => (
+            <div key={g.id} className="border border-border border-t-0 bg-card">
+              {/* Вкладки Вермахт / СССР */}
+              <div className="flex border-b border-border">
+                <button
+                  onClick={() => setActiveGroupTab('german')}
+                  className={`flex-1 py-3 font-display text-sm tracking-wider transition-all ${activeGroupTab === 'german' ? 'text-accent bg-accent/5 border-b-2 border-accent' : 'text-muted-foreground hover:text-foreground'}`}
+                >
+                  Вермахт
+                </button>
+                <button
+                  onClick={() => setActiveGroupTab('soviet')}
+                  className={`flex-1 py-3 font-display text-sm tracking-wider transition-all ${activeGroupTab === 'soviet' ? 'text-primary bg-primary/5 border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                >
+                  Красная Армия
+                </button>
+              </div>
+
+              {activeGroupTab === 'german' ? (
+                <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Командующий</p>
+                      <p className="font-display font-700 text-xl">{g.german.commander}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Состав</p>
+                      <p className="text-sm text-foreground/90">{g.german.armies}</p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 pt-2">
+                      {[['Солдат', g.german.men], ['Танков', g.german.tanks], ['Самолётов', g.german.aircraft]].map(([label, val]) => (
+                        <div key={label} className="border border-border p-3 text-center">
+                          <div className="font-display font-700 text-xl text-accent">{val}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Цель</p>
+                      <p className="text-sm text-foreground/90 leading-relaxed">{g.german.goal}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Ключевые операции</p>
+                      <div className="space-y-2">
+                        {g.german.operations.map((op, oi) => (
+                          <div key={oi} className="flex items-start gap-2">
+                            <span className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 shrink-0" />
+                            <span className="text-sm text-muted-foreground">{op}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Командующие</p>
+                      <p className="font-display font-700 text-xl">{g.soviet.commander}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Фронты</p>
+                      <p className="text-sm text-foreground/90">{g.soviet.fronts}</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      {[['Солдат', g.soviet.men], ['Танков', g.soviet.tanks]].map(([label, val]) => (
+                        <div key={label} className="border border-border p-3 text-center">
+                          <div className="font-display font-700 text-xl text-primary">{val}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Итог</p>
+                      <p className="text-sm text-foreground/90 leading-relaxed">{g.soviet.result}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Потери</p>
+                      <p className="text-sm text-muted-foreground">{g.soviet.losses}</p>
+                    </div>
+                    <div className="border border-primary/30 bg-primary/5 px-4 py-3">
+                      <p className="font-display text-sm text-primary">{g.outcomeColor === 'text-primary' ? '✓ ' : ''}{g.outcome}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
